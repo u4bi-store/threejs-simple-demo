@@ -1,16 +1,16 @@
 /* particules index.js*/
 
-var container = document.getElementById('container');
+var container = document.getElementById('container'); /* dom에 접근함*/
 
-var renderer = new THREE.WebGLRenderer();
-var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 1, 10000);
+var renderer = new THREE.WebGLRenderer(); /* 웹GL을 지원하는 렌더러 생성*/
+var scene = new THREE.Scene(); /* 씬 객체 생성*/
+var camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 1, 10000); /* 카메라 셋업함*/
 var distance = 500;
     
-renderer.setSize(container.offsetWidth, container.offsetHeight);
-container.appendChild(renderer.domElement);
+renderer.setSize(container.offsetWidth, container.offsetHeight); /* 렌더링할 공간 컨테이너란 id를 가진 div의 높이와 너비로 설정함*/
+container.appendChild(renderer.domElement); /* 컨테이너에 렌더러란 돔을 주입함*/
 
-scene.add(camera);
+scene.add(camera); /* 씬에 카메라 구성을 집어넣음*/
 
 for(var i=0; i<500; i++){
   var geometry = new THREE.CircleGeometry(1,32);
@@ -30,9 +30,9 @@ camera.lookAt(scene);
 
 render();
 
-function render(){
-  requestAnimationFrame(render);
-  renderer.render(scene, camera);
+function render(){ /* 말그대로 렌더링*/
+  requestAnimationFrame(render); /* 브라우저 탭을 이동하거나 할때 정지되게끔 만듬 브라우저 부담을 줄여줌*/
+  renderer.render(scene, camera); /* 렌더러란 돔안에 씬과 카메라를 렌딩시킴*/
   camera.rotation.x += 0.001;
   camera.rotation.y += 0.001;
   container.addEventListener('mousemove', mouseControoler, false);
