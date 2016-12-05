@@ -13,28 +13,28 @@ container.appendChild(renderer.domElement); /* 컨테이너에 렌더러란 돔�
 scene.add(camera); /* 씬에 카메라 구성을 집어넣음*/
 
 for(var i=0; i<500; i++){
-  var geometry = new THREE.CircleGeometry(1,32);
-  var material = new THREE.MeshBasicMaterial( { color : Math.random() * 0x808080 + 0x808080 } );
-  var cube = new THREE.Mesh(geometry, material);
+  var geometry = new THREE.CircleGeometry(1,32); /* 원형 기하게를 만듬 (radius,  segments)*/
+  var material = new THREE.MeshBasicMaterial( { color : Math.random() * 0x808080 + 0x808080 } );/* 색감*/
+  var cube = new THREE.Mesh(geometry, material); /* cube에 위의 두 객체를 정의함*/
 
   cube.position.x = Math.random() * distance * 2 - distance;
   cube.position.y = Math.random() * distance * 2 - distance;
   cube.position.z = Math.random() * distance * 2 - distance;
 
   cube.scale.x = cube.scale.y = Math.random() * 10 + 5;
-  scene.add(cube);
+  scene.add(cube); /*씬에 cube 객체를 넣어줌*/
 }
 
-camera.position.z = 0;
-camera.lookAt(scene);
+camera.position.z = 0; /* 카메라의 z값은 0으로 */
+camera.lookAt(scene); /* 카메라의 시점은 씬을 마주보게*/
 
 render();
 
 function render(){ /* 말그대로 렌더링*/
   requestAnimationFrame(render); /* 브라우저 탭을 이동하거나 할때 정지되게끔 만듬 브라우저 부담을 줄여줌*/
   renderer.render(scene, camera); /* 렌더러란 돔안에 씬과 카메라를 렌딩시킴*/
-  camera.rotation.x += 0.001;
-  camera.rotation.y += 0.001;
+  camera.rotation.x += 0.001; /* 카메라의 좌표 x값을 회전시킴*/
+  camera.rotation.y += 0.001; /* 카메라의 좌표 x값을 회전시킴*/
   container.addEventListener('mousemove', mouseControoler, false);
 }
 
