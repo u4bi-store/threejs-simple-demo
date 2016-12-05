@@ -1,6 +1,6 @@
 /* earth style.css*/
 
-#container{
+#container{ /* 컨테이너 너비와 높이 지정*/
   width: 800px;
   height: 500px;
 }
