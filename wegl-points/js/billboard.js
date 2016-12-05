@@ -59,7 +59,15 @@ function init(){
 function mouseMove(){}
 function touchStart(){}
 function touchMove(){}
-function resizeWindow(){}
+function resizeWindow(){
+  windowHalfX = window.innerWidth/2;
+  windowHalfY = window.innerHeight/2;
+  
+  camera.aspect = window.innerWidth/window.innerHeight;
+  
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
 function render(){
   requestAnimationFrame(render);
