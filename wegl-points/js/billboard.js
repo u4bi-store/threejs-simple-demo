@@ -30,9 +30,9 @@ function init(){
   
   for(i = 0; i< 10000; i++){
     var vertext = new THREE.Vector3();
-    vertext.x = 2000 * Math.random(); -1000;
-    vertext.y = 2000 * Math.random(); -1000;
-    vertext.z = 2000 * Math.random(); -1000;
+    vertext.x = 2000 * Math.random() -1000;
+    vertext.y = 2000 * Math.random() -1000;
+    vertext.z = 2000 * Math.random() -1000;
     
     geometry.vertices.push(vertext);
   }
@@ -56,7 +56,10 @@ function init(){
   window.addEventListener( 'resize', resizeWindow, false );
 }
 
-function mouseMove(){}
+function mouseMove(){
+  mouseX = event.clientX - windowHalfX;
+  mouseY = event.clientY - windowHalfY;
+}
 function touchStart(){}
 function touchMove(){}
 function resizeWindow(){
@@ -75,7 +78,7 @@ function render(){
   var time = Date.now()*0.00005;
   
   camera.position.x += (mouseX - camera.position.x)*0.05;
-  camera.position.y += (mouseY - camera.position.y)*0.05;
+  camera.position.y += ( - mouseY - camera.position.y)*0.05;
   camera.lookAt( scene.position);
   
   h=(360*(1.0+time)%360)/360;
