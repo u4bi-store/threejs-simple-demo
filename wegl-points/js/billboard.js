@@ -56,12 +56,24 @@ function init(){
   window.addEventListener( 'resize', resizeWindow, false );
 }
 
-function mouseMove(){
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
+function mouseMove(e){
+  mouseX = e.clientX - windowHalfX;
+  mouseY = e.clientY - windowHalfY;
 }
-function touchStart(){}
-function touchMove(){}
+function touchStart(e){
+  if(e.touches.length != 1) return;  
+  event.preventDefault();
+  mouseX = event.touches[0].pageX - windowHalfX;
+  mouseY = event.touches[0].pageY - windowHalfY;
+
+}
+function touchMove(e){
+  if(e.touches.length != 1) return;  
+  event.preventDefault();
+  mouseX = event.touches[0].pageX - windowHalfX;
+  mouseY = event.touches[0].pageY - windowHalfY;
+
+}
 function resizeWindow(){
   windowHalfX = window.innerWidth/2;
   windowHalfY = window.innerHeight/2;
