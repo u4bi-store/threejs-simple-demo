@@ -5,6 +5,11 @@ if (!Detector.webgl)Detector.addGetWebGLMessage(); /*요소가 없을시 정보�
 var container;
 var camera, scene, renderer;
 var geometry, sprite, material, particles;
+
+var mouseX = 0, mouseY = 0;
+var windowHalfX = window.innerWidth / 2;
+var windowHalfY = window.innerHeight / 2;
+
 init();
 render();
 
@@ -44,10 +49,29 @@ function init(){
   
   particles = new THREE.Points(geometry, material);
   scene.add(particles);
+
+  document.addEventListener( 'mousemove', mouseMove, false );
+  document.addEventListener( 'touchstart', touchStart, false );
+  document.addEventListener( 'touchmove', touchMove, false );
+  window.addEventListener( 'resize', resizeWindow, false );
 }
+
+function mouseMove(){}
+function touchStart(){}
+function touchMove(){}
+function resizeWindow(){}
 
 function render(){
   requestAnimationFrame(render);
+  
+  var time = Date.now()*0.00005;
+  
+  camera.position.x += (mouseX - camera.position.x)*0.05;
+  camera.position.y += (mouseY - camera.position.y)*0.05;
   camera.lookAt( scene.position);
+  
+  h=(360*(1.0+time)%360)/360;
+  material.color.setHSL(h,0.5,0.5);
+  
   renderer.render(scene, camera);
 }
