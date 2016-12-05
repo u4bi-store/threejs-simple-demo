@@ -1,0 +1,11 @@
+/* earth style.css*/
+
+#container{
+  width: 800px;
+  height: 500px;
+}
+
+body{
+  margin:0;
+  padding:0;
+}
