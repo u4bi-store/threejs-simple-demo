@@ -56,9 +56,14 @@ function mouseWheel(e){
   camera.fov += e.deltaY * 0.05;
   camera.updateProjectionMatrix();
 }
-function mouseUp(e){}
+function mouseUp(e){
+  info.isUserInteracting = false;
+}
 function mouseMove(e){}
-function mouseDown(e){}
+function mouseDown(e){
+  e.preventDefault(); /* 핸들러내 기본동작을 중지하는 함수임*/
+  info.isUserInteracting = true;
+}
 
 function render(){
   requestAnimationFrame(render);
