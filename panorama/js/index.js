@@ -52,7 +52,10 @@ function windowResize(){
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function mouseWheel(){}
+function mouseWheel(e){
+  camera.fov += e.deltaY * 0.05;
+  camera.updateProjectionMatrix();
+}
 function mouseUp(){}
 function mouseMove(){}
 function mouseDown(){}
