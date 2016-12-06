@@ -4,6 +4,18 @@ var container;
 var camera, scene, renderer;
 var geometry, material, mesh;
 
+var info = {
+  isUserInteracting : false,
+  onMouseDownMouseX : 0,
+  onMouseDownMouseY : 0,
+  onMouseDownLon : 0,
+  onMouseDownLat : 0,
+  lon : 0,
+  lat : 0,
+  phi : 0,
+  theta : 0
+};
+
 init();
 render();
 
@@ -26,7 +38,19 @@ function init(){
   mesh = new THREE.Mesh(geometry, material);
   
   scene.add(mesh);
+  
+  document.addEventListener('mousedown' mouseDown, false);
+  document.addEventListener('mousemove', mouseMove,false);
+  document.addEventListener('mouseup', mouseUp,false);
+  document.addEventListener('wheel', mouseWheel,false);
+  document.addEventListener('resize', windowResize,false);
 }
+
+function windowResize(){}
+function mouseWheel(){}
+function mouseUp(){}
+function mouseMove(){}
+function mouseDown(){}
 
 function render(){
   requestAnimationFrame(render);
