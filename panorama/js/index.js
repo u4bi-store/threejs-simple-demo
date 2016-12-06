@@ -10,6 +10,10 @@ var info = {
   onMouseDownMouseY : 0,
   onMouseDownLon : 0,
   onMouseDownLat : 0,
+  onPointerDownPointerX : 0,
+  onPointerDownPointerY : 0,
+  onPointerDownLon : 0,
+  onPointerDownLat : 0,
   lon : 0,
   lat : 0,
   phi : 0,
@@ -59,10 +63,21 @@ function mouseWheel(e){
 function mouseUp(e){
   info.isUserInteracting = false;
 }
-function mouseMove(e){}
+function mouseMove(e){
+  if(!info.isUserInteracting) return;
+  
+  info.lon = ( info.onPointerDownPointerX - e.clientX ) * 0.1 + info.onPointerDownLon;
+  info.lat = ( e.clientY - info.onPointerDownPointerY ) * 0.1 + info.onPointerDownLat;
+}
 function mouseDown(e){
   e.preventDefault(); /* 핸들러내 기본동작을 중지하는 함수임*/
   info.isUserInteracting = true;
+  
+  info.onPointerDownPointerX = e.clientX;
+  info.onPointerDownPointerY = e.clientY;
+  
+  info.onPointerDownLon = info.lon;
+  info.onPointerDownLat = info.lat;
 }
 
 function render(){
