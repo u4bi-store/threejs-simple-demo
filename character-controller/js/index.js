@@ -15,13 +15,15 @@ init();
 render();
 
 function init() {
-  container = document.getElementById('container');
-  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000);
-  camera.position.set(0, 150, 1300);
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xffffff, 1000, 4000);
-  scene.add(camera);
-  scene.add(new THREE.AmbientLight(0x222222));
+  container = document.getElementById('container'); /* dom에 접근함*/
+  camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 4000); /*카메라 셋업함*/
+  /* PerspectiveCamera(수직된 카메라의 시점, 종횡비의 값, 절투체와의 최소 간격, 절투체와의 최대 간격*/
+  camera.position.set(0, 150, 1300); /* camera가 주시할 xyz초기화*/
+  
+  scene = new THREE.Scene(); /* 씬 객체 생성*/
+  scene.fog = new THREE.Fog(0xffffff, 1000, 4000); /*안개 클래스 하늘의 배경이나 뿌옇게*/
+  scene.add(camera); /* 씬에 카메라 구성을 집어넣음*/
+  scene.add(new THREE.AmbientLight(0x222222)); /* 모든곳을 밝히는 클래스 (색상hex 0xFFFFFF)*/
 
   /*https://threejs.org/docs/index.html#Reference/Lights/DirectionalLight
   특정 방향이 아니라 특정 위치에서 빛나는 빛을 생성하는 클래스 */
@@ -50,16 +52,24 @@ function init() {
   ground.receiveShadow = true; /* ground에 쉐도우 그림자 효과 투영함*/
   scene.add(ground); /*씬에 ground 에드함*/
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setClearColor(scene.fog.color);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  container.appendChild(renderer.domElement);
+  renderer = new THREE.WebGLRenderer({ antialias: true }); /* 웹GL을 지원하는 렌더러 생성 안티알리어스 활성화*/
+  renderer.setClearColor(scene.fog.color); /* 씬의 안개 색계열로 렌더러의 배경색을 정의함*/
+  renderer.setPixelRatio(window.devicePixelRatio); /* 현재 디스플레이 픽셀 반영함*/
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT); /* 렌더링할 공간의 사이즈 초기화*/
+  container.appendChild(renderer.domElement); /* 컨테이너에 렌더러란 돔을 주입함*/
 
-  renderer.gammaInput = true;
-  renderer.gammaOutput = true;
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.gammaInput = true; /* 들어오는 감마색상 출력 활성화*/
+  renderer.gammaOutput = true; /* 나가는 감마색상 출력 활성화*/
+  renderer.shadowMap.enabled = true; /* 구성 요소의 그림자 매핑 활성화*/
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap; /*쉐이더의 타입 정의*/
+  /* 옵션 :
+  THREE.BasicShadowMap 픽셀로 흝어짐
+  THREE.PCFShadowMap
+  THREE.PCFSoftShadowMap 젤부드러운듯
+  
+  쉐이더 속성들의 타입은 세가지가 있는데 기본 값은 THREE.PCFShadowMap 이라함
+  */
+  
   window.addEventListener('resize', onWindowResize, false);
   document.addEventListener('keydown', onKeyDown, false);
   document.addEventListener('keyup', onKeyUp, false);
