@@ -9,7 +9,7 @@ var characters;
 var nCharacters = 0;
 var cameraControls;
 var controls = {moveForward: false, moveBackward: false, moveLeft: false, moveRight: false};
-var clock = new THREE.Clock();
+var clock = new THREE.Clock(); /* 트랙 시간 클래스*/
 
 init();
 render();
@@ -70,49 +70,51 @@ function init() {
   쉐이더 속성들의 타입은 세가지가 있는데 기본 값은 THREE.PCFShadowMap 이라함
   */
   
-  window.addEventListener('resize', onWindowResize, false);
-  document.addEventListener('keydown', onKeyDown, false);
-  document.addEventListener('keyup', onKeyUp, false);
-  cameraControls = new THREE.OrbitControls(camera, renderer.domElement);
-  cameraControls.target.set(0, 50, 0);
+  window.addEventListener('resize', onWindowResize, false); /* 화면의 사이즈가 조정될 때 호출*/
+  document.addEventListener('keydown', onKeyDown, false); /* 키를 눌렀을 때 호출*/
+  document.addEventListener('keyup', onKeyUp, false); /* 키를 땔 때 호출*/
+  cameraControls = new THREE.OrbitControls(camera, renderer.domElement); /* 카메라 컨트롤 클래스*/
+  cameraControls.target.set(0, 50, 0); /* 컨트롤 지점의 앵글값 정의*/
 
   var configOgro = {
     baseUrl: "model/ogro/", body: "ogro.md2",skins: [ "grok.jpg"], weapons:  [ [ "weapon.md2", "weapon.jpg" ] ],
     animations: { move: "run", idle: "stand", jump: "jump", attack: "attack", crouchMove: "cwalk", crouchIdle: "cstand", crouchAttach: "crattack" },
     walkSpeed: 550, crouchSpeed: 175
-  };
+  };/* 주입할 데이터 정보를 객체에 담음*/
   
-  characters = new THREE.MD2CharacterComplex();
-  characters.scale = 3;
-  characters.controls = controls;
-  var baseCharacter = new THREE.MD2CharacterComplex();
-  baseCharacter.scale = 3;
+  characters = new THREE.MD2CharacterComplex();  /* md2 모델파일을 불러오는 클래스*/
+  characters.scale = 3; /* 스케일 정의*/
+  characters.controls = controls; /* controls에 정의된 컨트롤러 감지 데이터를 주입*/
+  
+  var baseCharacter = new THREE.MD2CharacterComplex(); /* md2 모델파일을 불러오는 클래스*/
+  baseCharacter.scale = 3; /* 스케일정의*/
   baseCharacter.onLoadComplete = function () {
+    /* 로드된 md2 모델객체에 대한 속성정의*/
     var cloneCharacter = characters;
-    cloneCharacter.shareParts(baseCharacter);
-    cloneCharacter.enableShadows(true);
-    cloneCharacter.setWeapon(0);
-    cloneCharacter.setSkin(0);
-    cloneCharacter.root.position.x = 150;
-    cloneCharacter.root.position.z = 250;
-    scene.add(cloneCharacter.root);
+    cloneCharacter.shareParts(baseCharacter); /* 주입*/
+    cloneCharacter.enableShadows(true); /* 쉐도우*/
+    cloneCharacter.setWeapon(0); /* 바디에 붙을 오브젝트 무기*/
+    cloneCharacter.setSkin(0); /* 데이터 정보에 주입된 스킨배열 넘버*/
+    cloneCharacter.root.position.x = 150; /* 조정될 x값*/
+    cloneCharacter.root.position.z = 250; /* 조정될 y값*/
+    scene.add(cloneCharacter.root); /* 씬에 md2 모델을 에드함*/
     
-    var gyro = new THREE.Gyroscope();
-    gyro.add(camera);
-    gyro.add(light, light.target);
-    characters.root.add(gyro);
+    var gyro = new THREE.Gyroscope(); /* 카메라의 앵글 정의 클래스*/
+    gyro.add(camera); /*gyro에 camera 에드함*/
+    gyro.add(light, light.target); /* 라이트와 그의 벡터를 에드함*/
+    characters.root.add(gyro); /* md2 모델 향해 어테치함*/
     
   };
   
-  baseCharacter.loadParts(configOgro);
+  baseCharacter.loadParts(configOgro); /*정의된 속성들을 렌딩함*/
 }
 
-function onWindowResize(event) {
+function onWindowResize(event) { /* 사이즈가 줄여질 떄 마다 카메라의  종횡비와 사이즈가 줄어듬*/
   SCREEN_WIDTH = window.innerWidth;
   SCREEN_HEIGHT = window.innerHeight;
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  camera.aspect = SCREEN_WIDTH/ SCREEN_HEIGHT;
-  camera.updateProjectionMatrix();
+  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT); /* 사이즈 설정*/
+  camera.aspect = SCREEN_WIDTH/ SCREEN_HEIGHT; /* 종횡비 설정*/
+  camera.updateProjectionMatrix();  /* 랜딩되는 요소들 리사이징 업뎃함*/
 }
 
 function onKeyDown (event) {
@@ -149,10 +151,12 @@ function onKeyUp (event) {
   }
 }
 
-function render() {
+function render() { /* 렌딩함*/
   requestAnimationFrame(render);
-  var delta = clock.getDelta();
-  cameraControls.update(delta);
-  characters.update(delta);
-  renderer.render(scene, camera);
+  /* 위 함수는 우리가 브라우저 탭을 이동하거나 할때 프레임을 정지시켜준다함 브라우저가 받는 부담과 배터리를 아껴줌*/
+  
+  var delta = clock.getDelta(); /* 렌딩이후 경과 초 리턴*/
+  cameraControls.update(delta); /* 카메라 앵글 빛계열 속성 시간 경과에 따른 변화*/
+  characters.update(delta); /* md2모델 빛계열 속성 시간 경과에 따른 변화*/
+  renderer.render(scene, camera); /* 컨테이너안에 입혀진 렌더러란 돔 내부의 씬과 카메라를 렌딩시킴*/
 }
