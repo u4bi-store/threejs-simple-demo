@@ -56,11 +56,22 @@ function mouseWheel(e){
   camera.fov += e.deltaY * 0.05;
   camera.updateProjectionMatrix();
 }
-function mouseUp(){}
-function mouseMove(){}
-function mouseDown(){}
+function mouseUp(e){}
+function mouseMove(e){}
+function mouseDown(e){}
 
 function render(){
   requestAnimationFrame(render);
-  renderer.render(scene, camera);
+
+  if(info.isUserInteracting === false) info.lon += 0.1;
+
+  info.lat = Math.max(-85, Math.min(85, info.lat));
+  info.phi = THREE.Math.degToRad(90-info.lat);
+  info.theta = THREE.Math.degToRad(info.lon);
+  camera.target.x = 500 * Math.sin(info.phi) * Math.cos(info.theta);
+  camera.target.y = 500 * Math.cos(info.phi);
+  camera.target.z = 500 * Math.sin(info.phi) * Math.sin(info.theta);
+  camera.lookAt(camera.target);
+
+renderer.render(scene, camera);
 }
