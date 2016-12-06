@@ -39,14 +39,19 @@ function init(){
   
   scene.add(mesh);
   
-  document.addEventListener('mousedown' mouseDown, false);
+  document.addEventListener('mousedown', mouseDown, false);
   document.addEventListener('mousemove', mouseMove,false);
   document.addEventListener('mouseup', mouseUp,false);
   document.addEventListener('wheel', mouseWheel,false);
-  document.addEventListener('resize', windowResize,false);
+  window.addEventListener('resize', windowResize,false);
 }
 
-function windowResize(){}
+function windowResize(){
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
 function mouseWheel(){}
 function mouseUp(){}
 function mouseMove(){}
