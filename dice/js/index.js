@@ -45,7 +45,25 @@ function init(){
   document.addEventListener( 'touchmove', touchMove, false );
 }
 
-function mouseDown(e){}
+function mouseDown(e){
+  event.preventDefault();
+  document.addEventListener( 'mousemove', mouseMove, false );
+  document.addEventListener( 'mouseup', mouseUp, false );
+  document.addEventListener( 'mouseout', mouseOut, false );
+}
+function mouseMove(e){}
+function mouseUp(e){
+  clearMouse();
+}
+function mouseOut(e){
+  clearMouse();
+}
+function clearMouse(){
+  document.removeEventListener( 'mousemove', mouseMove, false );
+  document.removeEventListener( 'mouseup', mouseUp, false );
+  document.removeEventListener( 'mouseout', mouseOut, false )
+}
+
 function touchStart(e){}
 function touchMove(e){}
 
