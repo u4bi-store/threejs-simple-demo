@@ -4,6 +4,15 @@ var container;
 var camera, scene, renderer;
 var cube, plane;
 
+var cubeset = {
+  targetPos:0,
+  targetDown:0,
+  mouseX:0,
+  mouseXDown:0
+};
+var winfX = window.innerWidth / 2;
+var winfY = window.innerHeight / 2;
+
 init();
 render();
 
@@ -50,8 +59,14 @@ function mouseDown(e){
   document.addEventListener( 'mousemove', mouseMove, false );
   document.addEventListener( 'mouseup', mouseUp, false );
   document.addEventListener( 'mouseout', mouseOut, false );
+
+  cubeset.mouseXDown = event.clientX - winfX;
+  cubeset.targetDown = cubeset.targetPos;
 }
-function mouseMove(e){}
+function mouseMove(e){
+  cubeset.mouseX = event.clientX - winfX;
+  cubeset.targetPos = cubeset.targetDown + (cubeset.mouseX - cubeset.mouseXDown) * 0.02;
+}
 function mouseUp(e){
   clearMouse();
 }
@@ -70,5 +85,6 @@ function touchMove(e){}
 function render(){
   requestAnimationFrame(render); /* 브라우저 탭을 이동하거나 할때 정지되게끔 해줌 브라우저 부담 줄임*/
 
+  plane.rotation.y = cube.rotation.y += (cubeset.targetPos - cube.rotation.y ) * 0.05;
   renderer.render(scene, camera); /* 컨테이너안에 입혀진 렌더러란 돔안의 씬과 카메라를 렌딩시킴*/
 }
