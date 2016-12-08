@@ -24,14 +24,14 @@ function init(){
   camera.position.z = 500; /* 카메라의 z값을 500으로 물체와의 간격 조정을 위함*/
   
   scene = new THREE.Scene(); /* 씬에 카메라 구성을 집어넣음*/
-  var geometry = new THREE.BoxGeometry( 200, 200, 200 );
+  var geometry = new THREE.BoxGeometry(200, 200, 200);
   // console.log('d : '+geometry.faces.length);
   for (var i = 0; i < geometry.faces.length; i += 2) { /* 12개 / 한면에 삼각형 두개임 그러므로 2쁠쁠*/
     var hex = Math.random() * 0xffffff; /* 랜덤돌려 hex값 구함*/
     geometry.faces[i].color.setHex(hex); /*현재 루프 i*/
     geometry.faces[i+1].color.setHex(hex); /* 한면 채워주기 위해 i의 다음번째까지*/
   }
-  var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } ); /*  정의된 faceColors를 주입함*/
+  var material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors, overdraw: 0.5 }); /*  정의된 faceColors를 주입함*/
   cube = new THREE.Mesh(geometry, material); /* cube에 위의 두 객체를 정의함*/
   
   cube.position.y = 150; /* cube의 pos y값 150으로 정의*/
@@ -39,7 +39,7 @@ function init(){
 
   var geometry = new THREE.PlaneBufferGeometry(200, 200);
   geometry.rotateX(-Math.PI/2); /*rx값 조정*/
-  var material = new THREE.MeshBasicMaterial( { color: 0xe0e0e0, overdraw: 0.5 } ); /* color 설정 투명도 0.5*/
+  var material = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, overdraw: 0.5 }); /* color 설정 투명도 0.5*/
   plane = new THREE.Mesh(geometry, material); /* plance에 위의 두 객체를 정의함*/
   scene.add(plane); /* 씬에 plane 객체를 넣어줌*/
 
@@ -49,25 +49,25 @@ function init(){
   renderer.setSize(window.innerWidth, window.innerHeight); /* 렌더링할 공간 컨테이너란 id를 가진 div의 높이와 너비로 설정함*/
   container.appendChild(renderer.domElement); /* 컨테이너에 렌더러란 돔을 주입함*/
   
-  document.addEventListener( 'mousedown', mouseDown, false );
-  document.addEventListener( 'touchstart', touchStart, false );
-  document.addEventListener( 'touchmove', touchMove, false );
-  window.addEventListener( 'resize', winResize, false );
+  document.addEventListener('mousedown', mouseDown, false);
+  document.addEventListener('touchstart', touchStart, false);
+  document.addEventListener('touchmove', touchMove, false);
+  window.addEventListener('resize', winResize, false);
 }
 
 function winResize(){
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  winfX = window.innerWidth / 2; /* 브라우저의 프레임이 줄어들거나 늘어났으니 windowHal(화면반절) 재정의함*/
+  winfY = window.innerHeight / 2;
+  camera.aspect = window.innerWidth / window.innerHeight;  /* 종횡비 조정*/
+  camera.updateProjectionMatrix(); /* 랜딩되는 객체들 사이즈 업데이트시킴*/
+  renderer.setSize(window.innerWidth, window.innerHeight); /* 사이즈 조정*/
 }
 
 function mouseDown(e){
   event.preventDefault();
-  document.addEventListener( 'mousemove', mouseMove, false );
-  document.addEventListener( 'mouseup', mouseUp, false );
-  document.addEventListener( 'mouseout', mouseOut, false );
+  document.addEventListener('mousemove', mouseMove, false);
+  document.addEventListener('mouseup', mouseUp, false);
+  document.addEventListener('mouseout', mouseOut, false);
 
   cubeset.mouseXDown = event.clientX - winfX;
   cubeset.targetDown = cubeset.targetPos;
@@ -83,17 +83,27 @@ function mouseOut(e){
   clearMouse();
 }
 function clearMouse(){
-  document.removeEventListener( 'mousemove', mouseMove, false );
-  document.removeEventListener( 'mouseup', mouseUp, false );
-  document.removeEventListener( 'mouseout', mouseOut, false )
+  document.removeEventListener('mousemove', mouseMove, false);
+  document.removeEventListener('mouseup', mouseUp, false);
+  document.removeEventListener('mouseout', mouseOut, false)
 }
 
-function touchStart(e){}
-function touchMove(e){}
+function touchStart(e) {
+  if(e.touches.length != 1) return;
+    e.preventDefault();
+    cubeset.mouseXDown = e.touches[0].pageX - winfX;
+    cubeset.targetDown = cubeset.targetPos;
+}
+function touchMove(e) {
+  if(e.touches.length != 1) return;
+    e.preventDefault();
+    cubeset.mouseX = e.touches[0].pageX - winfX;
+    cubeset.targetPos = cubeset.targetDown + (cubeset.mouseX - cubeset.mouseXDown) * 0.05;
+}
 
 function render(){
   requestAnimationFrame(render); /* 브라우저 탭을 이동하거나 할때 정지되게끔 해줌 브라우저 부담 줄임*/
 
-  plane.rotation.y = cube.rotation.y += (cubeset.targetPos - cube.rotation.y ) * 0.05;
+  plane.rotation.y = cube.rotation.y += (cubeset.targetPos - cube.rotation.y) * 0.05;
   renderer.render(scene, camera); /* 컨테이너안에 입혀진 렌더러란 돔안의 씬과 카메라를 렌딩시킴*/
 }
