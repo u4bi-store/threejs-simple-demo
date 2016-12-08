@@ -52,6 +52,15 @@ function init(){
   document.addEventListener( 'mousedown', mouseDown, false );
   document.addEventListener( 'touchstart', touchStart, false );
   document.addEventListener( 'touchmove', touchMove, false );
+  window.addEventListener( 'resize', winResize, false );
+}
+
+function winResize(){
+  windowHalfX = window.innerWidth / 2;
+  windowHalfY = window.innerHeight / 2;
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function mouseDown(e){
