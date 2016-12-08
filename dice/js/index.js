@@ -39,7 +39,15 @@ function init(){
   renderer.setPixelRatio(window.devicePixelRatio); /* 현재 디스플레이 픽셀 반영함*/
   renderer.setSize(window.innerWidth, window.innerHeight); /* 렌더링할 공간 컨테이너란 id를 가진 div의 높이와 너비로 설정함*/
   container.appendChild(renderer.domElement); /* 컨테이너에 렌더러란 돔을 주입함*/
+  
+  document.addEventListener( 'mousedown', mouseDown, false );
+  document.addEventListener( 'touchstart', touchStart, false );
+  document.addEventListener( 'touchmove', touchMove, false );
 }
+
+function mouseDown(e){}
+function touchStart(e){}
+function touchMove(e){}
 
 function render(){
   requestAnimationFrame(render); /* 브라우저 탭을 이동하거나 할때 정지되게끔 해줌 브라우저 부담 줄임*/
