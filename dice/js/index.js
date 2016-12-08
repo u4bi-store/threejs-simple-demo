@@ -2,7 +2,7 @@
 
 var container;
 var camera, scene, renderer;
-var cube;
+var cube, plane;
 
 init();
 render();
@@ -27,6 +27,12 @@ function init(){
   
   cube.position.y = 150; /* cube의 pos y값 150으로 정의*/
   scene.add(cube); /* 씬에 cube 객체를 넣어줌*/
+
+  var geometry = new THREE.PlaneBufferGeometry(200, 200);
+  geometry.rotateX(-Math.PI/2); /*rx값 조정*/
+  var material = new THREE.MeshBasicMaterial( { color: 0xe0e0e0, overdraw: 0.5 } ); /* color 설정 투명도 0.5*/
+  plane = new THREE.Mesh(geometry, material); /* plance에 위의 두 객체를 정의함*/
+  scene.add(plane); /* 씬에 plane 객체를 넣어줌*/
 
   renderer = new THREE.CanvasRenderer(); /* 캔버스를 지원하는 렌더러 생성*/
   renderer.setClearColor(0xf0f0f0); /* 렌더러 배경색 설정*/
