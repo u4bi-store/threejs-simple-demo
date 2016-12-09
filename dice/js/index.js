@@ -39,7 +39,7 @@ function init(){
 
   var geometry = new THREE.PlaneBufferGeometry(200, 200);
   geometry.rotateX(-Math.PI/2); /*rx값 조정*/
-  var material = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, overdraw: 0.5 }); /* color 설정 투명도 0.5*/
+  var material = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, overdraw: 0.5 }); /* color 설정 빛의굴곡도 0.5*/
   plane = new THREE.Mesh(geometry, material); /* plance에 위의 두 객체를 정의함*/
   scene.add(plane); /* 씬에 plane 객체를 넣어줌*/
 

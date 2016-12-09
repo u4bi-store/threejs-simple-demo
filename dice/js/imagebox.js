@@ -28,12 +28,12 @@ function init(){
 
   var materialArray = []; /* 박스면의 이미지 로드해 모아놓을 어레이 선언함*/
   /* https://threejs.org/docs/index.html#Reference/Materials/MeshBasicMaterial */
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_0.jpg' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_1.jpg' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_2.jpg' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_0.jpg' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_1.jpg' ) }));
-  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_2.jpg' ) }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_0.jpg' ), overdraw: 0.5 })); /*overdraw 접전면에 빛의 굴곡을 줘 보더선을 가려줌*/
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_1.jpg' ), overdraw: 0.5 }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_2.jpg' ), overdraw: 0.5 }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_0.jpg' ), overdraw: 0.5 }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_1.jpg' ), overdraw: 0.5 }));
+  materialArray.push(new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture( 'images/imagebox_2.jpg' ), overdraw: 0.5 }));
   var material = new THREE.MeshFaceMaterial(materialArray); /* 담았던 어레이 원소들을 박스면에 정의*/
   
   cube = new THREE.Mesh(geometry, material); /* cube에 위의 두 객체를 정의함*/
