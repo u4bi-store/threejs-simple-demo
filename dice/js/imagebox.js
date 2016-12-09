@@ -2,7 +2,7 @@
 
 var container;
 var camera, scene, renderer;
-var cube
+var cube;
 
 var cubeset = {
   targetPos:0,

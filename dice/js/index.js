@@ -85,7 +85,7 @@ function mouseOut(e){
 function clearMouse(){
   document.removeEventListener('mousemove', mouseMove, false);
   document.removeEventListener('mouseup', mouseUp, false);
-  document.removeEventListener('mouseout', mouseOut, false)
+  document.removeEventListener('mouseout', mouseOut, false);
 }
 
 function touchStart(e) {
