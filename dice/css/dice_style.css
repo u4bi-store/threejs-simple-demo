@@ -1,0 +1,12 @@
+/* main dice style.css*/
+
+#container{
+  width:50%;
+  height:50%;
+}
+
+body{
+  margin:0;
+  padding:0;
+  overflow: hidden;
+}
