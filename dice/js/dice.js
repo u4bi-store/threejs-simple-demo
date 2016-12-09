@@ -2,7 +2,7 @@
 
 var container;
 var camera, scene, renderer;
-var dice;
+var dice, plane;
 
 init();
 render();
@@ -26,6 +26,12 @@ function init(){
   dice.position.y = 150;
   scene.add(dice);
   
+  var geometry = new THREE.PlaneBufferGeometry(200, 200);
+  geometry.rotateX(-Math.PI/2); /*rx값 조정*/
+  var material = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, overdraw: 0.5 }); /* color 설정 빛의굴곡도 0.5*/
+  plane = new THREE.Mesh(geometry, material); /* plance에 위의 두 객체를 정의함*/
+  scene.add(plane); /* 씬에 plane 객체를 넣어줌*/
+
   renderer = new THREE.CanvasRenderer();
   renderer.setClearColor(0xf0f0f0);
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -37,5 +43,7 @@ function render(){
   requestAnimationFrame(render);
   dice.rotation.x += .2;
   dice.rotation.y += .2;
+  plane.rotation.x += .2;
+  plane.rotation.y += .2;
   renderer.render(scene, camera);	
 }
