@@ -25,7 +25,7 @@ render();
 
 function init(){
   container = document.getElementById('container'); /* 돔에 접근함*/
-  renderer = new THREE.WebGLRenderer(); /* 웹GL을 지원하는 렌더러 생성*/
+  renderer = new THREE.CanvasRenderer(); /* 웹GL을 지원하는 렌더러 생성*/
   renderer.setPixelRatio(window.devicePixelRatio); /* 현재 디스플레이 픽셀 반영함*/
   renderer.setSize(window.innerWidth, window.innerHeight); /* 렌더링할 공간임 컨테이너란 id를 가진 di=v의 높이와 너비를 설정함*/
   container.appendChild(renderer.domElement); /* 컨테이너에 렌더러란 돔을 주입함*/
