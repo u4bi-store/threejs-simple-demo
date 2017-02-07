@@ -89,8 +89,13 @@ function touchMove(e) {
 
 function render(){
   requestAnimationFrame(render);
+  plane.rotation.x = dice.rotation.x += (dice_info.targetPos - dice.rotation.x) * 0.05;
   plane.rotation.y = dice.rotation.y += (dice_info.targetPos - dice.rotation.y) * 0.05;
-  renderer.render(scene, camera);	
+  
+  console.log('dice rx :'+dice.rotation.x);
+  console.log('dice ry :'+dice.rotation.y);
+    
+  renderer.render(scene, camera);
 }
 
 function object_init(){
