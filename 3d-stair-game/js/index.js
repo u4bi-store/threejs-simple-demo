@@ -193,6 +193,7 @@ function animate(){
 
             score = intersections[0].object.id-7;
             objects[score].material.color.set( 0x0000ff);
+            objects[score-1].material.color.set( 0xEA4335);
             scoreText.innerHTML="현재 상황 : "+score+"계단";
             
             canJump = true;
