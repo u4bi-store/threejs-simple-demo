@@ -135,7 +135,7 @@ function init(){
 
     /* 장애물 */
     geometry = new THREE.BoxGeometry(20, 1, 20);
-    for (var i = 0; i < 100; i ++){
+    for (var i = 1; i < 10; i ++){
         material = new THREE.MeshPhongMaterial({ specular: 0xffffff, shading: THREE.FlatShading, vertexColors: THREE.VertexColors });
         var mesh = new THREE.Mesh( geometry, material );
         mesh.position.x = i*30;
@@ -193,7 +193,8 @@ function animate(){
 
             score = intersections[0].object.id-7;
             objects[score].material.color.set( 0x0000ff);
-            objects[score-1].material.color.set( 0xEA4335);
+            if(score+1 != objects.length)objects[score+1].material.color.set( 0xEA4335);
+            if(score-1 != -1)objects[score-1].material.color.set( 0xEA4335);
             scoreText.innerHTML="현재 상황 : "+score+"계단";
             
             canJump = true;
