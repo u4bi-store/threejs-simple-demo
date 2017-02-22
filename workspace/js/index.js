@@ -25,12 +25,19 @@ function init(){
     renderer.setClearColor(0x000000, 1.0); /* 랜딩되는 배경을 깔아줄 컬러 검은색 */
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    /** 기하체를 넣은 공간
-     *
-     * 
-     * 
-     * 일단 잘되는지 테스트해보자 
-     */
+    /** 기하체를 넣은 공간 일단 잘되는지 테스트해보자 
+    
+    관련 레퍼런스
+        https://threejs.org/docs/#Reference/Geometries/BoxGeometry
+        
+    */
+    
+    var cubeGeometry = new THREE.BoxGeometry(2,2,2); /* 기하체 생성함 x axis, y axis, z axis */
+    var cubeMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
+    // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    
+    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
+    scene.add(cube); /* 나타낸 객체 씬에 담음 */
 
     container.appendChild(renderer.domElement);/* 이 정의된 렌더러를 컨테이너에 주입함 */
 
