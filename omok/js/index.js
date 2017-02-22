@@ -5,6 +5,8 @@ var camera, scene, renderer;
    카메라, 씬, 렌더러
 */
 
+var stone_flag =0; /* 스톤 컬러 플랙 */
+
 
 window.onload = init; /* 돔 생성시 초기화 구문 */
 
@@ -25,12 +27,12 @@ function init(){
     /* 화면을 가리킬 카메라를 정의함 */
 
     camera.position.x = 0;
-    camera.position.y = 15;
-    camera.position.z = 30; /* 카메라의 xyz 축을 지정함 */
+    camera.position.y = 80;
+    camera.position.z = 80; /* 카메라의 xyz 축을 지정함 */
     camera.lookAt(scene.position); /* 카메라의 앵글이 씬의 좌표를 가리킴 */
 
     renderer = new THREE.WebGLRenderer(); /* 랜더러를 WebGL로 생성함 */
-    renderer.setClearColor(0x000000, 1.0); /* 랜딩되는 배경을 깔아줄 컬러 검은색 */
+    renderer.setClearColor(0xFFFFFF, 1.0); /* 랜딩되는 배경을 깔아줄 컬러 검은색 */
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     /** 기하체를 넣은 공간 일단 잘되는지 테스트해보자 
@@ -40,13 +42,27 @@ function init(){
         
     */
     
-    var omokStoneGeometry = new THREE.SphereGeometry( 2, 10, 2); /* 원형 기하체 생성함 radius, widthSegments, heightSegments, */
-    var omokStoneMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
-    // var omokMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
-    var omokStone = new THREE.Mesh(omokStoneGeometry, omokStoneMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
-    omokStone.position.y = 2;
-    scene.add(omokStone); /* 나타낸 객체 씬에 담음 */
+    var stoneColor = [ 0x000000,0xFFFFFF ];
 
+    for(var i=0; i < 19; i++){
+
+        for(var k=0; k < 19; k++){
+            var omokStoneGeometry = new THREE.SphereGeometry( 2, 10, 2); /* 원형 기하체 생성함 radius, widthSegments, heightSegments, */
+            var omokStoneMaterial = new THREE.MeshBasicMaterial( {color: stoneColor[stone_flag]} );
+            var omokMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
+            var omokStone = new THREE.Mesh(omokStoneGeometry, omokStoneMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
+            
+            omokStone.position.x = i*5;
+            omokStone.position.z = k*5;
+            omokStone.position.y = 2;
+
+            scene.add(omokStone); /* 나타낸 객체 씬에 담음 */
+            
+            if(stone_flag)stone_flag = 0;
+            else stone_flag =1;
+        }
+        
+    }
 
     /* 오목판 */
     /*
