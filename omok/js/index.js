@@ -25,8 +25,8 @@ function init(){
     /* 화면을 가리킬 카메라를 정의함 */
 
     camera.position.x = 0;
-    camera.position.y = 100;
-    camera.position.z = 100; /* 카메라의 xyz 축을 지정함 */
+    camera.position.y = 15;
+    camera.position.z = 30; /* 카메라의 xyz 축을 지정함 */
     camera.lookAt(scene.position); /* 카메라의 앵글이 씬의 좌표를 가리킴 */
 
     renderer = new THREE.WebGLRenderer(); /* 랜더러를 WebGL로 생성함 */
@@ -36,16 +36,16 @@ function init(){
     /** 기하체를 넣은 공간 일단 잘되는지 테스트해보자 
     
     관련 레퍼런스
-        https://threejs.org/docs/#Reference/Geometries/BoxGeometry
+        https://threejs.org/docs/#Reference/Geometries/SphereGeometry
         
     */
     
-    var cubeGeometry = new THREE.BoxGeometry(2,2,2); /* 기하체 생성함 x axis, y axis, z axis */
-    var cubeMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
-    // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-    
-    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
-    scene.add(cube); /* 나타낸 객체 씬에 담음 */
+    var omokStoneGeometry = new THREE.SphereGeometry( 2, 10, 2); /* 원형 기하체 생성함 radius, widthSegments, heightSegments, */
+    var omokStoneMaterial = new THREE.MeshBasicMaterial( {color: 0x000000} );
+    // var omokMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
+    var omokStone = new THREE.Mesh(omokStoneGeometry, omokStoneMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
+    omokStone.position.y = 2;
+    scene.add(omokStone); /* 나타낸 객체 씬에 담음 */
 
 
     /* 오목판 */
