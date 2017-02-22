@@ -102,12 +102,12 @@ function init(){
      document.addEventListener( 'mousemove', onMouseMove, false ); /* 마우스 움직일 때 호출*/
     // document.addEventListener( 'touchstart', touchStart, false ); /* 터치화면 누를 때 호출*/
     // document.addEventListener( 'touchmove', touchMove, false ); /* 터치화면을 움직일 때 호출*/
-    window.addEventListener('keydown', function(e){
-        if(!rotate_flag)rotate_flag = true;
-    } , false);
-    window.addEventListener('keyup', function(e){
-        if(rotate_flag)rotate_flag = false;    
-    }, false);
+    document.addEventListener('keydown', function(e){ if(!rotate_flag)rotate_flag = true; });
+    document.addEventListener('keyup', function(e){if(rotate_flag)rotate_flag = false; });
+    document.addEventListener('wheel', function(e){  /* 마우스 휠로 줌을 표현 */
+        camera.fov += e.deltaY * 0.05; /* 스크롤이 일어난 축적값에 따른 카메라 수직된 시점의 거리 조정*/
+        camera.updateProjectionMatrix(); /* 랜딩되는 요소들 리사이징 업뎃함*/
+    });
 
     render(); /* 스크린 랜딩구문 */
 }
@@ -122,14 +122,6 @@ function render(){
     }
     camera.lookAt( scene.position);
     /* 카메라가 씬을 바라보게*/
-}
-
-function onKeyDown(e){
-    console.log(e.keyCode)
-}
-
-function onKeyUp(e){
-    console.log(e.keyCode)
 }
 
 function onMouseMove(e){
