@@ -13,12 +13,20 @@ function init(){
     /* 컨테이너란 아이디를 가진 돔을 참조함 */
 
     scene = new THREE.Scene(); /* 모든 요소를 담을 씬을 생성함 */
-    camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+    /* 관련 레퍼런스
+        https://threejs.org/docs/#Reference/Cameras/PerspectiveCamera
+        
+        fov — Camera frustum vertical field of view.
+        aspect — Camera frustum aspect ratio.
+        near — Camera frustum near plane.
+        far — Camera frustum far plane.
+    */
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
     /* 화면을 가리킬 카메라를 정의함 */
 
-    camera.position.x = 10;
-    camera.position.y = 10;
-    camera.position.z = 15; /* 카메라의 xyz 축을 지정함 */
+    camera.position.x = 0;
+    camera.position.y = 100;
+    camera.position.z = 100; /* 카메라의 xyz 축을 지정함 */
     camera.lookAt(scene.position); /* 카메라의 앵글이 씬의 좌표를 가리킴 */
 
     renderer = new THREE.WebGLRenderer(); /* 랜더러를 WebGL로 생성함 */
@@ -44,21 +52,29 @@ function init(){
     /*
     관련 레퍼런스
         https://threejs.org/docs/#Reference/Geometries/PlaneGeometry
+
+        width — Width along the X axis.
+        height — Height along the Y axis.
+        widthSegments — Optional. Default is 1. 
+        heightSegments — Optional. Default is 1.
+
     */
-    omokBoardGeometry = new THREE.PlaneGeometry(10, 10, 0, 0);
+    omokBoardGeometry = new THREE.PlaneGeometry(100, 100);
     omokBoardGeometry.rotateX(- Math.PI / 2);
-    
-    omokBoardMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors });
-    omokBoardMaterial.color.set(0xFF0000);
+    omokBoardMaterial = new THREE.MeshBasicMaterial( { map: THREE.ImageUtils.loadTexture('images/omokBoard.jpg') } );
+
     omokBoard = new THREE.Mesh(omokBoardGeometry, omokBoardMaterial);
+    omokBoard.rotation.x = 0;
+    omokBoard.rotation.y = 0;
+
     scene.add(omokBoard);
 
     container.appendChild(renderer.domElement);/* 이 정의된 렌더러를 컨테이너에 주입함 */
-
     render(); /* 스크린 랜딩구문 */
+
 }
 
 function render(){
-
-    renderer.render(scene, camera); /* 씬과 카메라를 주입받은 렌더러가 돈다 */
+    requestAnimationFrame(render);
+    renderer.render(scene, camera); /* 씬과 카메라를 주입받은 렌더러가 돈다 */   
 }
