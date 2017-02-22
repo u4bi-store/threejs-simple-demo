@@ -6,11 +6,17 @@ var camera, scene, renderer;
 */
 
 var stone_flag =0; /* 스톤 컬러 플랙 */
+var rotate_flag = false; /* 회전 유무 토클 */
+
 var pos ={
 
     margin :{
         x : -45,
-        y : -45,
+        y : -45
+    },
+    mouse :{
+        x:0,
+        y:0
     }
 };
 
@@ -92,11 +98,44 @@ function init(){
     scene.add(omokBoard);
 
     container.appendChild(renderer.domElement);/* 이 정의된 렌더러를 컨테이너에 주입함 */
-    render(); /* 스크린 랜딩구문 */
+    
+     document.addEventListener( 'mousemove', onMouseMove, false ); /* 마우스 움직일 때 호출*/
+    // document.addEventListener( 'touchstart', touchStart, false ); /* 터치화면 누를 때 호출*/
+    // document.addEventListener( 'touchmove', touchMove, false ); /* 터치화면을 움직일 때 호출*/
+    window.addEventListener('keydown', function(e){
+        if(!rotate_flag)rotate_flag = true;
+    } , false);
+    window.addEventListener('keyup', function(e){
+        if(rotate_flag)rotate_flag = false;    
+    }, false);
 
+    render(); /* 스크린 랜딩구문 */
 }
 
 function render(){
     requestAnimationFrame(render);
-    renderer.render(scene, camera); /* 씬과 카메라를 주입받은 렌더러가 돈다 */   
+    renderer.render(scene, camera); /* 씬과 카메라를 주입받은 렌더러가 돈다 */
+
+    if(rotate_flag){ /* 토클 활성화 시 카메라의 앵글값 변경*/
+        camera.position.x += ( pos.mouse.x - camera.position.x)*0.05;
+        camera.position.y += ( - pos.mouse.y - camera.position.y)*0.05;
+    }
+    camera.lookAt( scene.position);
+    /* 카메라가 씬을 바라보게*/
+}
+
+function onKeyDown(e){
+    console.log(e.keyCode)
+}
+
+function onKeyUp(e){
+    console.log(e.keyCode)
+}
+
+function onMouseMove(e){
+    /* 마우스가 움직이는 좌표를 향해 -window.innerWidth/2 만큼
+       제외한 값으로 정의
+    */
+    pos.mouse.x = e.clientX - window.innerWidth / 2;
+    pos.mouse.y = e.clientY - window.innerHeight / 2;
 }
