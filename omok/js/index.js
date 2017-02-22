@@ -1,0 +1,64 @@
+var container;
+/* webgl이 표출할 공간 정의 */
+var camera, scene, renderer;
+/* 총 3가지 구성요소가 필요함.
+   카메라, 씬, 렌더러
+*/
+
+
+window.onload = init; /* 돔 생성시 초기화 구문 */
+
+function init(){
+    var container = document.getElementById('container');
+    /* 컨테이너란 아이디를 가진 돔을 참조함 */
+
+    scene = new THREE.Scene(); /* 모든 요소를 담을 씬을 생성함 */
+    camera = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 1, 1000);
+    /* 화면을 가리킬 카메라를 정의함 */
+
+    camera.position.x = 10;
+    camera.position.y = 10;
+    camera.position.z = 15; /* 카메라의 xyz 축을 지정함 */
+    camera.lookAt(scene.position); /* 카메라의 앵글이 씬의 좌표를 가리킴 */
+
+    renderer = new THREE.WebGLRenderer(); /* 랜더러를 WebGL로 생성함 */
+    renderer.setClearColor(0x000000, 1.0); /* 랜딩되는 배경을 깔아줄 컬러 검은색 */
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    /** 기하체를 넣은 공간 일단 잘되는지 테스트해보자 
+    
+    관련 레퍼런스
+        https://threejs.org/docs/#Reference/Geometries/BoxGeometry
+        
+    */
+    
+    var cubeGeometry = new THREE.BoxGeometry(2,2,2); /* 기하체 생성함 x axis, y axis, z axis */
+    var cubeMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
+    // var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+    
+    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
+    scene.add(cube); /* 나타낸 객체 씬에 담음 */
+
+
+    /* 오목판 */
+    /*
+    관련 레퍼런스
+        https://threejs.org/docs/#Reference/Geometries/PlaneGeometry
+    */
+    omokBoardGeometry = new THREE.PlaneGeometry(10, 10, 0, 0);
+    omokBoardGeometry.rotateX(- Math.PI / 2);
+    
+    omokBoardMaterial = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors });
+    omokBoardMaterial.color.set(0xFF0000);
+    omokBoard = new THREE.Mesh(omokBoardGeometry, omokBoardMaterial);
+    scene.add(omokBoard);
+
+    container.appendChild(renderer.domElement);/* 이 정의된 렌더러를 컨테이너에 주입함 */
+
+    render(); /* 스크린 랜딩구문 */
+}
+
+function render(){
+
+    renderer.render(scene, camera); /* 씬과 카메라를 주입받은 렌더러가 돈다 */
+}
