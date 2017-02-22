@@ -6,7 +6,13 @@ var camera, scene, renderer;
 */
 
 var stone_flag =0; /* 스톤 컬러 플랙 */
+var pos ={
 
+    margin :{
+        x : -45,
+        y : -45,
+    }
+};
 
 window.onload = init; /* 돔 생성시 초기화 구문 */
 
@@ -47,13 +53,13 @@ function init(){
     for(var i=0; i < 19; i++){
 
         for(var k=0; k < 19; k++){
-            var omokStoneGeometry = new THREE.SphereGeometry( 2, 10, 2); /* 원형 기하체 생성함 radius, widthSegments, heightSegments, */
+            var omokStoneGeometry = new THREE.SphereGeometry( 2, 4, 6); /* 원형 기하체 생성함 radius, widthSegments, heightSegments, */
             var omokStoneMaterial = new THREE.MeshBasicMaterial( {color: stoneColor[stone_flag]} );
             var omokMaterial = new THREE.MeshNormalMaterial(); /* 컬러 지정함 */
             var omokStone = new THREE.Mesh(omokStoneGeometry, omokStoneMaterial); /* 기하체와 컬러 주입해서 객체 나타냄 */
             
-            omokStone.position.x = i*5;
-            omokStone.position.z = k*5;
+            omokStone.position.x = (i*5) + pos.margin.x;
+            omokStone.position.z = (k*5) + pos.margin.y;
             omokStone.position.y = 2;
 
             scene.add(omokStone); /* 나타낸 객체 씬에 담음 */
