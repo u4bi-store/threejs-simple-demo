@@ -23,8 +23,25 @@ var pos ={
 var posArray = [];
 
 window.onload = init; /* 돔 생성시 초기화 구문 */
-
 function init(){
+    document.body.style.background = 'url("images/intro.jpg") fixed';
+    document.body.style.backgroundSize ='100% 100%';
+    
+    var startButton = document.getElementById('startButton');
+    var whiteStone = document.getElementsByClassName('notice white');
+    var blackStone = document.getElementsByClassName('notice black');
+
+    startButton.addEventListener('click', function(e){
+        startButton.style.display = 'none';
+        onOmokModeInit();
+
+        var prop = 'inline-block'; 
+        whiteStone[0].style.display = prop;
+        blackStone[0].style.display = prop;
+    });
+}
+
+function onOmokModeInit(){
     var container = document.getElementById('container');
     /* 컨테이너란 아이디를 가진 돔을 참조함 */
 
@@ -69,6 +86,7 @@ function init(){
             omokStone.position.x = (i*5) + pos.margin.x;
             omokStone.position.z = (k*5) + pos.margin.y;
             omokStone.position.y = 2;
+            console.log(omokStone);
 
             scene.add(omokStone); /* 나타낸 객체 씬에 담음 */
             
@@ -80,6 +98,7 @@ function init(){
                    임시로 바둑돌의 좌표 x,y값 객체에 담음
                    추 후 바둑알 지정 위치 설정에 관한 고민중
                 */
+                id : omokStone.id,
                 x : omokStone.position.x,
                 y : omokStone.position.z
             });
