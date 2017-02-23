@@ -20,6 +20,8 @@ var pos ={
     }
 };
 
+var posArray = [];
+
 window.onload = init; /* 돔 생성시 초기화 구문 */
 
 function init(){
@@ -72,10 +74,20 @@ function init(){
             
             if(stone_flag)stone_flag = 0;
             else stone_flag =1;
+
+            posArray.push({
+                /* HACK : 조만간 처리
+                   임시로 바둑돌의 좌표 x,y값 객체에 담음
+                   추 후 바둑알 지정 위치 설정에 관한 고민중
+                */
+                x : omokStone.position.x,
+                y : omokStone.position.z
+            });
+
         }
         
     }
-
+    console.log(posArray); /* 총 361개의 돌자리가 잡힘 */
     /* 오목판 */
     /*
     관련 레퍼런스
