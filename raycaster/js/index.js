@@ -6,6 +6,8 @@ var mouse, raycaster, isShiftDown = false;
 var rollOverMesh, rollOverMaterial;
 var objects = [];
 
+var geo, mat;
+
 init();
 render();
 
@@ -54,7 +56,7 @@ function init() {
     geoPlan.rotateX(-Math.PI/2);
     
     /* 바닥생성 */
-    plane = new THREE.Mesh(geoPlan, new THREE.MeshBasicMaterial( { visible: false }));
+    plane = new THREE.Mesh(geoPlan, new THREE.MeshBasicMaterial( { visible: true }));
 
     scene.add(plane); /* 씬에 담음 */
 
@@ -75,7 +77,29 @@ function init() {
 
     container.appendChild( renderer.domElement ); /* 컨테이너에 넣음 */
     document.addEventListener( 'mousemove', boxMove, false );
+    document.addEventListener( 'mousedown', boxDown, false );
     /* */
+}
+
+function boxDown(e){
+    event.preventDefault();
+    mouse.set((event.clientX / window.innerWidth ) * 2 - 1, - (event.clientY / window.innerHeight ) * 2 + 1);
+    raycaster.setFromCamera(mouse, camera);
+    
+    var intersects = raycaster.intersectObjects( objects );
+    if (intersects.length > 0) {
+        
+        var intersect = intersects[0];
+        var voxel = new THREE.Mesh(geo, mat);
+
+        voxel.position.copy(intersect.point).add(intersect.face.normal);
+        voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
+        
+        scene.add(voxel);
+        
+        objects.push(voxel);
+        render();
+    }
 }
 
 /* 마우스 무브할 시 */
