@@ -35,3 +35,15 @@ body{
   top:5%;
   right: 2%;
 }
+
+.notice.black, .notice.white{
+  display: none;
+}
+.notice.start{
+  top:40%;
+  left: 35%;
+}
+
+.notice.start:hover{
+  background-color:rgba(212,212,50,0.5);
+}
