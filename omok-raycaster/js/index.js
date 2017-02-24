@@ -1,7 +1,7 @@
 var
     container,
     camera, scene, renderer,
-    pointer, boder, line,
+    pointer, boder, line, boderMap =[],
     mouse, raycaster,
     client;
 
@@ -21,7 +21,10 @@ function prop(){
             pos : {
                 x : 0, y : 0
             },
-            color : 0
+            color : {
+                move : 0,
+                drop : 0
+            }
         },
         raycaster : new THREE.Raycaster(),
         mouse     : new THREE.Vector2()
@@ -50,7 +53,6 @@ function domset(){
 function init() {
     prop();
     domset();
-    render();
 }
 
 function modeInit(){
@@ -66,6 +68,7 @@ function modeInit(){
     scene.add(line);
 
     modeEvent();
+    render();
 }
 
 function modeEvent(){
@@ -126,8 +129,8 @@ function lineLoader(){
         geo.vertices.push(new THREE.Vector3(size, 0, i));
         geo.vertices.push(new THREE.Vector3(i, 0, -size));
         geo.vertices.push(new THREE.Vector3(i, 0, size));
+        console.log(geo.vertices);
     }
-
     var mat = new THREE.LineBasicMaterial({color: 0xFF0000, opacity: 0.8, transparent:true});
     return new THREE.LineSegments(geo, mat);
 }
@@ -164,15 +167,17 @@ function pointerMove(e){
     var omok = omoks[0];
     pointer.position.copy(omok.point).add(omok.face.normal);
     pointer.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
-    pointer.material.color.set(client.pointer.color);
+    
+    pointer.material.color.set(client.pointer.color.move);
 }
 
 function dropStone(e){
     var
-        stoneColor = [0x000000,0xFFFFFF];
+        stoneColor = [0xFFFFFF,0x000000];
         
-    (omokArray.length-1)%2 == 0 ? client.pointer.color = stoneColor[1] : client.pointer.color = stoneColor[0];
-    console.log(omokArray.length);
+    (omokArray.length)%2 == 0 ? (function(drop, move){ client.pointer.color.drop = stoneColor[1]; client.pointer.color.move = stoneColor[0] })() : (function(drop, move){ client.pointer.color.drop = stoneColor[0]; client.pointer.color.move = stoneColor[1] })();
+    // console.log(omokArray.length);
+    // console.log(client.pointer.color.drop);
 
     client.pointer.pos.x = (e.clientX/window.innerWidth)*2-1;
     client.pointer.pos.y = -(e.clientY/window.innerHeight)*2+1;
@@ -184,13 +189,13 @@ function dropStone(e){
     if(!omoks.length)return;
 
     var omok = omoks[0];
-    console.log(omok);
+    // console.log(omok);
 
-    var stone = createStone(20, 4, 6, client.pointer.color);
+    var stone = createStone(20, 4, 6, client.pointer.color.drop);
 
     stone.position.copy(omok.point).add(omok.face.normal);
     stone.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
-    console.log('copy');
+    // console.log('copy');
 
     scene.add(stone);
     omokArray.push(stone);
