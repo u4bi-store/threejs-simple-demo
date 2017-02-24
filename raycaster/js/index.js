@@ -82,7 +82,7 @@ function init() {
 }
 
 function boxDown(e){
-    event.preventDefault();
+    e.preventDefault();
     mouse.set((event.clientX / window.innerWidth ) * 2 - 1, - (event.clientY / window.innerHeight ) * 2 + 1);
     raycaster.setFromCamera(mouse, camera);
     
