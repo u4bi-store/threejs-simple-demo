@@ -36,13 +36,13 @@ function domset(){
     document.body.style.backgroundSize ='100% 100%';
     
     notice = {
-        start : document.getElementById('startButton'),
+        start : document.getElementById('start'),
         white : document.getElementsByClassName('notice white'),
         black : document.getElementsByClassName('notice black'),
         prop  : 'inline-block'
     };
 
-    startButton.addEventListener('click', function(e){
+    notice.start.addEventListener('click', function(e){
         notice.start.style.display = 'none'; 
         notice.white[0].style.display = notice.prop;
         notice.black[0].style.display = notice.prop;
@@ -175,7 +175,16 @@ function dropStone(e){
     var
         stoneColor = [0xFFFFFF,0x000000];
         
-    (omokArray.length)%2 == 0 ? (function(drop, move){ client.pointer.color.drop = stoneColor[1]; client.pointer.color.move = stoneColor[0] })() : (function(drop, move){ client.pointer.color.drop = stoneColor[0]; client.pointer.color.move = stoneColor[1] })();
+    (omokArray.length)%2 == 0 ?
+    (function(drop, move){
+        client.pointer.color.drop = stoneColor[1];
+        client.pointer.color.move = stoneColor[0]
+    })()
+    :
+    (function(drop, move){
+        client.pointer.color.drop = stoneColor[0];
+        client.pointer.color.move = stoneColor[1]
+    })();
     // console.log(omokArray.length);
     // console.log(client.pointer.color.drop);
 
