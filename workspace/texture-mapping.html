@@ -113,11 +113,24 @@
 				*/
 				var texture = new THREE.ImageUtils.loadTexture('./resource/box.jpg');
 
-				var boxMaterial = new THREE.MeshBasicMaterial({ 
-					 /* 로드한 이미지를 맵핑 */
-                     map  : texture, 
-                     side : THREE.DoubleSide 
-                 });   
+
+				/**
+				 * 해당 기하체의 머티리얼 배열만큼 채색함.
+				 * 6가지의 색상으로 정의
+				 *
+				 */
+				var boxMaterials = [
+					new THREE.MeshBasicMaterial({map  : texture}),
+					new THREE.MeshBasicMaterial({color:0x00FF00}),
+					new THREE.MeshBasicMaterial({color:0x0000FF}),
+					new THREE.MeshBasicMaterial({color:0xFFFF00}),
+					new THREE.MeshBasicMaterial({color:0x00FFFF}),
+					new THREE.MeshBasicMaterial({color:0xFFFFFF})
+				];
+
+				/* 위에 정의된 머티리얼을 도형 오브젝트의 face에 맵핑함
+				*/
+				var boxMaterial = new THREE.MeshFaceMaterial(boxMaterials);
 
 
 				/**
