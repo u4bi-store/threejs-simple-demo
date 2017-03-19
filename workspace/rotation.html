@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+
+		<!-- three.js 라이브러리들 임포트함.
+
+			여기서 직접적으로 사용안되는 라이브러리가 있지만 추후 사용목적이 있음
+			일반적으로 three.js를 이용해 작업을 할 때 모두 기본적으로 들어가는 라이브러리들이다.
+		-->
+		<script src="./lib/three.js"></script>
+		<script src="./lib/Detector.js"></script>
+		<script src="./lib/CanvasRenderer.js"></script>
+		<script src="./lib/Projector.js"></script>
+	</head>
+	<body>
+		<!-- webgl 캔버스를 포함할 디비전 요소임 -->
+		<div id="container">
+
+		<!-- 스크립트 작성 -->
+		<script>
+			var scene,    // 전역 씬 개체
+				camera,   // 전역 카메라 개체
+				triangle; // 전역 도형 개체
+
+			initScene(); // 씬 초기화
+			
+			/**
+			 * renderScene ()을 호출하는 대신 'animateScene ()'이라는 새로운 함수를 호출함
+			 * 
+			 * 지속적인 씬전환을 위함 애니매이션화함
+			 */
+			animateScene();
+
+			/**
+			* 씬 초기화
+			*/
+			function initScene(){
+				/*
+					브라우저가 WebGL을 지원하는지 확인하는 것이 좋음.
+					WebGL 렌더러에서 안티 얼라이싱을 사용하려면 활성화 시켜야함.
+					하지만 캔버스 랜더러에서는 디폴트가 안티 얼라이싱이라고 함.
+
+					여러 렌더러의 접근 방식이 있는데 캔버스 랜더러 같은 경우에
+					WebGL을 지원하지 않는 브라우저에서 볼 수 있다고 함.
+
+					하지만 한계가 있다고 함.
+				*/
+				if(Detector.webgl){
+					renderer = new THREE.WebGLRenderer({antialias:true});
+
+				// 만약 WebGL을 지원하지 않는다면 캔버스 렌더러가 선언 됨.
+				} else {
+					renderer = new THREE.CanvasRenderer();
+				}
+
+				// 렌더러의 배경색을 설정함. 완전 불투명한. (색상, 알파값)
+				renderer.setClearColor(0x000000, 1);
+
+				// 풀사이즈의 렌더러를 사용하기 위해 브라우저의 높이와 너비를 가져옴
+				canvasWidth = window.innerWidth;
+				canvasHeight = window.innerHeight;
+
+				// 렌더러의 영역을 브라우저의 크기로 지정함
+				renderer.setSize(canvasWidth, canvasHeight);
+
+				// body에 지정한 container를 dom 형태로 가져와 렌더러의 element를 어펜드함.
+				document.getElementById("container").appendChild(renderer.domElement);
+
+				/**
+				* 모든 렌더링 객체들이 담겨질 씬을 생성함. 카메라, 조명, 도형 오브젝트같은 등
+				*
+				*/
+				scene = new THREE.Scene();
+
+				/**
+				* 하나의 씬을 선언함.
+				*
+				* 따라서 카메라가 필요함.
+				* Three.js는 세가지 카메라 유형을 제공
+				* - PerspectiveCamera  (원근 투영법 카메라)
+				* - OrthographicCamera (평행 투영법 카메라)
+				* - CombinedCamera     (런타임중 투시나 평행 투영으로의 전환)
+				* 
+				* 주로 PerspectiveCamera 원근 투영법이 자주 사용 됨
+				* 
+				* 카메라는 
+				* 시야 fov
+				* 종횡비 aspect ratio (일반적으로 캔버스의 너비와 높이로 설정)
+				* 근처 near and
+				* 멀리 far
+				* 
+				*/
+
+				camera = new THREE.PerspectiveCamera(45, canvasWidth / canvasHeight, 1, 100);
+				camera.position.set(0, 0, 10); // 포지션 지정
+				camera.lookAt(scene.position); // 카메라가 씬의 포지션을 바라보게
+				scene.add(camera); 			   // 씬에 카메라를 주입함
+
+				/** 삼각형을 만듬
+				* 1. 기하체를 생성함. THREE.Geometry()
+				* 2. 정점 추가 vertices
+				* 3. 정점 인덱스를 설정함 faces 
+				*
+				* 차후에는 Geometries 요소들을 이용하면 됨.
+					BoxBufferGeometry
+					BoxGeometry
+					CircleBufferGeometry
+					CircleGeometry
+					ConeBufferGeometry
+					
+					.... etc
+
+					https://threejs.org/docs 접속 후 Geometries 검색
+				*/
+				var triangleGeometry = new THREE.Geometry();
+
+				triangleGeometry.vertices.push(new THREE.Vector3( 0.0,  1.0, 0.0));
+				triangleGeometry.vertices.push(new THREE.Vector3(-1.0, -1.0, 0.0));
+				triangleGeometry.vertices.push(new THREE.Vector3( 1.0, -1.0, 0.0));
+				
+				triangleGeometry.faces.push(new THREE.Face3(0, 1, 2));
+
+				/* 표면을 채색하려면 머티리얼을 생성 해야함.
+				   각면의 꼭지점을 기준으로 서로 다른색을 정의함.
+				   그라데이션 형태로
+				   
+				   캔버스 랜더러는 vertex color가 지원되지 않는다고 함.
+				   
+				*/
+				triangleGeometry.faces[0].vertexColors[0] = new THREE.Color(0xFF0000); 
+				triangleGeometry.faces[0].vertexColors[1] = new THREE.Color(0x00FF00); 
+				triangleGeometry.faces[0].vertexColors[2] = new THREE.Color(0x0000FF); 
+
+				/*
+					표면을 채색하려면 머티리얼을 생성해야함
+					
+					기본적인 머티리얼 채색은 THREE.MeshBasicMaterial 객체를 사용함
+					일단 기본적인 color만 설정
+				*/
+
+				var triangleMaterial = new THREE.MeshBasicMaterial({
+					/* 정점 색상을 활성화하려면 vertexColors 속성을 활성화 해야함.
+					   THREE.VertexColors로 지정
+					*/
+					vertexColors:THREE.VertexColors,
+					side:THREE.DoubleSide
+
+					/* 컬러를 흰색으로 채색 후 THREE.DoubleSide 속성을 활성화시 각 면이 양면 렌더링 됨.
+					   즉 앞면과 뒷면
+
+						일반적으로 backface culling 이라하여 side만 렌더링 됨
+						카메라쪽으로 다른 한면은 렌더링 되지 않음.
+
+						이런 일이 생길 때 doubleSided를 true로 설정하면 됨.				
+					*/
+
+				});
+
+				/**
+				* Mesh를 생성하고 인자로 기하체와 채색체를 주입함
+				* 
+				* x축은 -1.5
+				* y축은 0.0
+				* z축은 4
+				*
+				* 그 후 정의된 Mesh를 씬에 주입함
+				*/
+				triangle = new THREE.Mesh(triangleGeometry, triangleMaterial);
+				triangle.position.set(-1.5, 0.0, 4.0);
+				scene.add(triangle);
+			}
+
+			/**
+			* 씬 렌더링 3D 세계를 2D 스크린 화면에 맵핑해줌
+			*/
+			function renderScene(){
+				renderer.render(scene, camera); // 렌더러의 요소 렌더링
+			}
+
+			function animateScene(){
+				/**
+				 * requestAnimationFrame
+				 *
+				 * 브라우저에서 지원하는 타이머 루프에 의해 콜백되는 함수임
+				 * 
+				 * 화면의 요소가 업데이트 되는 경우에만 호출함.
+				 * 또한 브라우저 탭이 보이지 않으면 애니메이션이 일시 중지됨.
+				 *
+				 * 따라서 렌더러 요소가 변경이 되면 (예로 폴리곤의 로테이션 x,y축)
+				 * 콜백이 호출됨
+				 *
+				 * 콜백이 호출되면 다시 회전축을 변경하고 씬에 담아냄
+				*/ 
+				requestAnimationFrame(animateScene); // 브라우저내 화면 요소가 갱신되는 경우에만 콜백함수를 호출 됨
+							
+				// 도형의 회전축을 갱신
+				triangle.rotation.x+= 0.1;
+				triangle.rotation.y+= 0.1;
+
+				renderScene();
+			} 
+
+		</script>
+	</body>
+</html>
