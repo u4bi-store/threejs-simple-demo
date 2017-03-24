@@ -14,12 +14,10 @@ function init(){
     /* 컨테이너란 아이디를 가진 돔을 참조함 */
 
     scene = new THREE.Scene(); /* 모든 요소를 담을 씬을 생성함 */
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1500);
     /* 화면을 가리킬 카메라를 정의함 */
 
-    camera.position.x = 15;
-    camera.position.y = 16;
-    camera.position.z = 130; /* 카메라의 xyz 축을 지정함 */
+    camera.position.y = 1400; /* y축에 대한 포지션 지정 */
     camera.lookAt(scene.position); /* 카메라의 앵글이 씬의 좌표를 가리킴 */
 
     renderer = new THREE.WebGLRenderer(); /* 랜더러를 WebGL로 생성함 */
