@@ -38,7 +38,7 @@
 
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(screen.width, screen.height);
-            renderer.setClearColor(0xFF0000);
+            renderer.setClearColor(0xFFFFFF);
 
             container = document.getElementById('container');
             container.appendChild(renderer.domElement);
@@ -46,6 +46,23 @@
             document.addEventListener('mousedown', onMouseDown);
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
+
+
+            var object,
+                material;
+            
+            var
+                geo = new THREE.SphereGeometry(1, 24, 24);
+            
+            for(var i =0; i< 20; i++){
+                material = new THREE.MeshPhongMaterial({
+                    color : 0xFFFFFF
+                });
+
+                object = new THREE.Mesh(geo.clone(), material);
+                objects.push(object);
+                scene.add(object);
+            }
         }
 
         function onMouseDown(e){
@@ -60,7 +77,19 @@
 
         }
 
+        function animate(){
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render(){
+            renderer.render(scene, camera);
+
+        }
+
         init();
+        animate();
+
 
     </script>
 </body>
