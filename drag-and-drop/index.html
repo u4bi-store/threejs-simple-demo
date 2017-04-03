@@ -22,7 +22,19 @@
         var raycaster = new THREE.Raycaster();
 
         function init(){
+            scene = new THREE.Scene();
+
+            var 
+                screen = {
+                    width : window.innerWidth,
+                    height : window.innerHeight
+                };
             
+            camera = new THREE.PerspectiveCamera(45, screen.width / screen.height, 1, 1000);
+            scene.add(camera);
+            
+            camera.position.set(100,0,0);
+            camera.lootAt(new THREE.Vector3(0,0,0));
 
         }
 
