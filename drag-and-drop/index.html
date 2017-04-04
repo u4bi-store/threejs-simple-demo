@@ -71,7 +71,7 @@
             }
         }
 
-        function getRaycaster(e, mesh){
+        function getRaycaster(e, mesh, type){
             var mouse = {
                 x : (e.clientX / window.innerWidth) * 2 - 1,
                 y : -(e.clientY / window.innerHeight) * 2 + 1 
@@ -80,11 +80,11 @@
             vector.unproject(camera);
             raycaster.set(camera.position, vector.sub(camera.position).normalize());
 
-            return raycaster.intersectObjects(mesh);
+            return type ? raycaster.intersectObjects(mesh) : raycaster.intersectObject(mesh);
         }
 
         function onMouseDown(e){
-            var intersects = getRaycaster(e, objects);
+            var intersects = getRaycaster(e, objects, true);
 
             if(intersects.length > 0){
                 selection = intersects[0].object;
@@ -98,24 +98,16 @@
 
         function onMouseMove(e){
 
-            var mouse = {
-                x : (e.clientX / window.innerWidth) * 2 - 1,
-                y : -(e.clientY / window.innerHeight) * 2 + 1 
-            },
-            vector = new THREE.Vector3(mouse.x, mouse.y, 1);
-            vector.unproject(camera);
-            raycaster.set(camera.position, vector.sub(camera.position).normalize());
-
             if(selection){
-                var intersects = raycaster.intersectObject(plane);
+                var intersects = getRaycaster(e, plane, false);
                 selection.position.copy(intersects[0].point.sub(offset));
                 console.log(intersects[0].point);
             } else {
-
-                var intersects = raycaster.intersectObjects(objects);
+                var intersects = getRaycaster(e, objects, true);
                 if (intersects.length > 0) {
                     plane.position.copy(intersects[0].object.position);
                     plane.lookAt(camera.position);
+                    // console.log('check');
                 }
             }
         }
