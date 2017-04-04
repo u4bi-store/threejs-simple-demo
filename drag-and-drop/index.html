@@ -17,6 +17,7 @@
 
         var selection,
             offset = new THREE.Vector3(),
+            plane,
             objects = [];
         
         var raycaster = new THREE.Raycaster();
@@ -47,6 +48,10 @@
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
 
+
+            plane = new THREE.Mesh(new THREE.PlaneBufferGeometry(500, 500, 8, 8), new THREE.MeshBasicMaterial({color: 0xFFFFFF}));
+            plane.visible = false;
+            scene.add(plane);
 
             var object,
                 material;
@@ -87,11 +92,9 @@
         }
 
         function onMouseMove(e){
-
         }
 
         function onMouseUp(e){
-
         }
 
         function animate(){
