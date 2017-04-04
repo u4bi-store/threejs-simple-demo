@@ -49,19 +49,20 @@
             document.addEventListener('mouseup', onMouseUp);
 
 
-            plane = new THREE.Mesh(new THREE.PlaneBufferGeometry(500, 500, 8, 8), new THREE.MeshBasicMaterial({color: 0xFFFFFF}));
-            plane.visible = false;
+            plane = new THREE.Mesh(new THREE.PlaneGeometry(500, 500, 8, 8), new THREE.MeshBasicMaterial({color: 0xFFFF00}));
+            // plane.visible = false;
             scene.add(plane);
-
+            plane.rotation.x = 90;
+            
             var object,
                 material;
             
             var
                 geo = new THREE.SphereGeometry(2, 24, 24);
             
-            for(var i =0; i< 20; i++){
-                material = new THREE.MeshPhongMaterial({
-                    color : 0xFFFFFF
+            for(var i =0; i< 2; i++){
+                material = new THREE.MeshBasicMaterial({
+                    color : 0x000000
                 });
 
                 object = new THREE.Mesh(geo.clone(), material);
@@ -88,13 +89,43 @@
             if(intersects.length > 0){
                 selection = intersects[0].object;
                 console.log('selection', selection);
+
+                var intersects = raycaster.intersectObject(plane);
+                offset.copy(intersects[0].point).sub(plane.position);
+                console.log(intersects[0].point);
             }
         }
 
         function onMouseMove(e){
+            e.preventDefault();
+
+            var 
+                mouse = {
+                    x : (e.clientX / window.innerWidth) * 2 - 1,
+                    y : -(e.clientY / window.innerHeight) * 2 + 1 
+                },
+                vector = new THREE.Vector3(mouse.x, mouse.y, 1);
+            
+            vector.unproject(camera);
+
+            raycaster.set(camera.position, vector.sub(camera.position).normalize());
+
+            if(selection){
+                var intersects = raycaster.intersectObject(plane);
+                selection.position.copy(intersects[0].point.sub(offset));
+                console.log(intersects[0].point);
+            } else {
+                // Update position of the plane if need
+                var intersects = raycaster.intersectObjects(objects);
+                if (intersects.length > 0) {
+                    plane.position.copy(intersects[0].object.position);
+                    plane.lookAt(camera.position);
+                }
+            }
         }
 
         function onMouseUp(e){
+            selection = null;
         }
 
         function animate(){
@@ -104,7 +135,6 @@
 
         function render(){
             renderer.render(scene, camera);
-
         }
 
         init();
