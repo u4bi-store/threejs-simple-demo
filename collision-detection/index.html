@@ -15,6 +15,10 @@
             renderer,
             container;
 
+        var 
+            item,
+            point;
+
         init();
         animate();
         
@@ -39,6 +43,28 @@
 
             container = document.getElementById('container');
             container.appendChild(renderer.domElement);
+
+            item = new THREE.Mesh(new THREE.SphereGeometry(1),
+                new THREE.MeshBasicMaterial({
+                    color : 0x00000,
+                    transparent : true,
+                    opacity: 0.5
+                })
+            );
+
+            point = new THREE.Mesh(new THREE.SphereGeometry(1),
+                new THREE.MeshBasicMaterial({
+                    color : 0xFF0000,
+                    transparent : true,
+                    opacity: 0.5
+                })
+            );
+
+            scene.add(item);
+            scene.add(point);
+            
+            item.position.y = 5;
+            point.position.y = -5;
 
         }   
 
