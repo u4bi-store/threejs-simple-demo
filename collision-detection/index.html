@@ -8,6 +8,7 @@
 
     <div id="container"></div>
 
+    <!--<script src="../lib/three.js"></script>-->
     <script src="../lib/three.js"></script>
     <script>
         var scene,
@@ -18,7 +19,8 @@
         var 
             item,
             point,
-            helper;
+            helper,
+            collisioned = false;
 
         init();
         animate();
@@ -83,7 +85,11 @@
             renderer.render(scene, camera);
 
             helper.update();
-            console.log(item.position);
+
+            if(!collisioned)item.position.y -= 0.1;
+            if(!collisioned)point.position.y += 0.1;
+            
+            helper.box.containsPoint(item.position) ? collisioned = true : collisioned = false;
 
         }
 
