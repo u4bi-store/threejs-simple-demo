@@ -17,7 +17,8 @@
 
         var 
             item,
-            point;
+            point,
+            helper;
 
         init();
         animate();
@@ -60,11 +61,16 @@
                 })
             );
 
+            helper = new THREE.BoundingBoxHelper(point, 0xFF0000);
+            console.log(helper);
+            helper.update();
+
             scene.add(item);
             scene.add(point);
+            scene.add(helper);
             
-            item.position.y = 5;
-            point.position.y = -5;
+            item.position.y = 10;
+            point.position.y = -10;
 
         }   
 
@@ -75,6 +81,10 @@
 
         function render(){
             renderer.render(scene, camera);
+
+            helper.update();
+            console.log(item.position);
+
         }
 
     </script>
