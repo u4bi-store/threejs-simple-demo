@@ -22,7 +22,7 @@
             helper,
             map,
             area,
-            isArea = true,
+            isArea = false,
             collisioned = false;
 
         init();
@@ -105,14 +105,14 @@
             helper.setFromObject(item);
             area.setFromObject(map);
 
-            if(!isArea)item.position.y -= 0.1;
+            if(isArea)item.position.y -= 0.1;
             if(!collisioned){
                 point.position.y += 0.1;
                 helper.containsPoint(point.position) ? collisioned = true : collisioned = false;
             }
             
             // helper.box.containsPoint(item.position) ? collisioned = true : collisioned = false;
-            area.containsPoint(item.position) ? isArea = false : isArea = true;
+            area.containsPoint(item.position) ? isArea = true : isArea = false;
 
         }
 
