@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>collision detection</title>
+</head>
+<body>
+
+    <div id="container"></div>
+
+    <!--<script src="../lib/three.js"></script>-->
+    <script src="../lib/three.js"></script>
+    <script>
+        var scene,
+            camera,
+            renderer,
+            container;
+
+        var 
+            item,
+            point,
+            helper,
+            collisioned = false;
+
+        init();
+        animate();
+        
+        function init(){
+            scene = new THREE.Scene();
+
+            var 
+                screen = {
+                    width : window.innerWidth,
+                    height : window.innerHeight
+                };
+            
+            camera = new THREE.PerspectiveCamera(45, screen.width / screen.height, 1, 1000);
+            scene.add(camera);
+
+            camera.position.set(100,0,0);
+            camera.lookAt(new THREE.Vector3(0,0,0));
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(screen.width, screen.height);
+            renderer.setClearColor(0xFFFFFF);
+
+            container = document.getElementById('container');
+            container.appendChild(renderer.domElement);
+
+            item = new THREE.Mesh(new THREE.SphereGeometry(1),
+                new THREE.MeshBasicMaterial({
+                    color : 0x00000,
+                    transparent : true,
+                    opacity: 0.5
+                })
+            );
+
+            point = new THREE.Mesh(new THREE.SphereGeometry(1),
+                new THREE.MeshBasicMaterial({
+                    color : 0xFF0000,
+                    transparent : true,
+                    opacity: 0.5
+                })
+            );
+
+            helper = new THREE.BoundingBoxHelper(point, 0xFF0000);
+            console.log(helper);
+            helper.update();
+
+            scene.add(item);
+            scene.add(point);
+            scene.add(helper);
+            
+            item.position.y = 10;
+            point.position.y = -10;
+
+        }   
+
+        function animate(){
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render(){
+            renderer.render(scene, camera);
+
+            helper.update();
+
+            if(!collisioned)item.position.y -= 0.1;
+            if(!collisioned)point.position.y += 0.1;
+            
+            helper.box.containsPoint(item.position) ? collisioned = true : collisioned = false;
+
+        }
+
+    </script>
+</body>
+</html>
