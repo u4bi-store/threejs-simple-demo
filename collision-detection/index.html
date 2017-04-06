@@ -110,9 +110,6 @@
                 point.position.y += 0.1;
                 helper.containsPoint(point.position) ? collisioned = true : collisioned = false;
             }
-
-            if(collisioned)console.log('포인트 충돌');
-            if(isArea)console.log('아이템 맵 벗어남');
             
             // helper.box.containsPoint(item.position) ? collisioned = true : collisioned = false;
             area.containsPoint(item.position) ? isArea = false : isArea = true;
