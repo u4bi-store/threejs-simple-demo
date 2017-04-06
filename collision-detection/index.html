@@ -21,6 +21,8 @@
             point,
             helper,
             map,
+            area,
+            isArea = true,
             collisioned = false;
 
         init();
@@ -48,6 +50,14 @@
             container = document.getElementById('container');
             container.appendChild(renderer.domElement);
 
+            map = new THREE.Mesh(new THREE.BoxGeometry(20, 20, 20),
+                new THREE.MeshBasicMaterial({
+                    color: 0xffff00,
+                    transparent : true,
+                    opacity: 0.1
+                })
+            );
+
             item = new THREE.Mesh(new THREE.SphereGeometry(1),
                 new THREE.MeshBasicMaterial({
                     color : 0x00000,
@@ -69,14 +79,17 @@
             // console.log(helper);
             // helper.update();
             helper = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+            area = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
 
 
+            scene.add(map);
             scene.add(item);
             scene.add(point);
             // scene.add(helper);
             
-            item.position.y = 10;
-            point.position.y = -10;
+            map.position.x = -10;
+            item.position.y = 5;
+            point.position.y = -5;
 
         }   
 
@@ -90,12 +103,17 @@
 
             // helper.update();
             helper.setFromObject(item);
+            area.setFromObject(map);
 
-            if(!collisioned)item.position.y -= 0.1;
+            item.position.y -= 0.1;
             if(!collisioned)point.position.y += 0.1;
+            if(collisioned)console.log('포인트 충돌');
+
+            if(isArea)console.log('아이템 맵 벗어남');
             
             // helper.box.containsPoint(item.position) ? collisioned = true : collisioned = false;
             helper.containsPoint(point.position) ? collisioned = true : collisioned = false;
+            area.containsPoint(item.position) ? isArea = false : isArea = true;
 
         }
 
