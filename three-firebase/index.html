@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+    <head>
+        <title>riotjs three js</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+        <script>
+
+        var screen = {
+                width  : 500,
+                height : 300
+            },
+            view = {
+                angle  : 55,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 10000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(), 
+            container = document.getElementById('container');
+        
+        var 
+            users = {}, // 유저
+            forward=true;
+
+        var 
+            config = { apiKey: "AIzaSyAhRGK9Y6-IEV3anoU6buyJb2szj2AORfU", authDomain: "three-firebase.firebaseapp.com", databaseURL: "https://three-firebase.firebaseio.com", projectId: "three-firebase", storageBucket: "three-firebase.appspot.com", messagingSenderId: "920499493036" },
+            db;
+
+        init();
+
+        function init(){
+
+            firebase.initializeApp(config);
+            db = firebase.database();
+
+            var
+                ref = db.ref('users/');
+
+            ref.on('child_added', onAdd);
+            ref.on('child_changed', onChanged);
+
+            scene.add(camera);
+            camera.position.set(0, 15, 20);
+            camera.lookAt(new THREE.Vector3());
+
+            renderer.setSize( screen.width, screen.height );
+            container.appendChild( renderer.domElement );
+
+            joinUser('player1', 0xFF00FF);
+            joinUser('player2', 0x00FF00);
+            joinUser('player3', 0xFFFF00);
+
+            // exitUser('hio');
+
+            render();
+        }
+
+        function render(){
+            requestAnimationFrame( render );
+            renderer.render( scene, camera );
+
+            forward ?
+            (function(){
+                users['player1'].position.x += 0.1;
+                users['player2'].position.z += 0.1;
+                users['player3'].position.y += 0.1;
+            })():
+            (function(){
+                users['player1'].position.x -= 0.1;
+                users['player2'].position.z -= 0.1;
+                users['player3'].position.y -= 0.1;
+            })();
+
+            var posX = users['player1'].position.x;
+            if(posX >= 10 || posX <= -10) forward = !forward;
+
+            db.ref('users/player1/position').update({
+                x : users['player1'].position.x
+            });
+
+            db.ref('users/player2/position').update({
+                z : users['player2'].position.z
+            });
+
+            db.ref('users/player3/position').update({
+                y : users['player3'].position.y
+            });
+        }
+
+        function joinUser(name, color){
+
+            db.ref('users/'+name).set({
+                name : name,
+                color : color,
+                position : {
+                    x : 0,
+                    y : 0,
+                    z : 0
+                }
+            });
+
+            users[name] = cube(color);
+            scene.add(users[name]);
+
+            console.log(users);
+        }
+
+        function exitUser(name){
+
+            db.ref('users/'+name).remove();
+
+            scene.remove(users[name]);
+
+            delete users[name];
+            console.log(users);
+        }
+
+        function cube(color){
+            var geometry = new THREE.BoxGeometry(2, 2, 2),
+                material = new THREE.MeshBasicMaterial({ color : color });
+                
+            return new THREE.Mesh( geometry, material ); 
+        }
+
+        function onAdd(e){
+
+        }
+        
+        function onChanged(e){
+            console.log(e.key, e.val().position);
+
+        }
+
+        </script>
+    </body>
+
+</html>
