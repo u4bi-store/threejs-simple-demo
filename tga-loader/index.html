@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Quick Start Three js - lesson 3</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <!--<script src="../lib/three.js"></script>-->
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/75/three.min.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script src="./lib/TGALoader.js"></script>
+
+        <script>
+
+        var screen = {
+                width  : 400,
+                height : 300
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 10000
+            },
+            renderer = new THREE.WebGLRenderer(), 
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+            container = document.getElementById('container');
+        
+        var 
+            cube;
+
+        var
+            tgaLoader = new THREE.TGALoader(),
+            texture;
+
+        init();
+
+        function init(){
+            scene.add(camera);
+            camera.position.z = 20;
+
+            renderer.setSize( screen.width, screen.height );
+
+            container.appendChild( renderer.domElement );
+
+
+            var texture = tgaLoader.load('./texture/crate_color8.tga');
+
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial({ map : texture });
+
+            cube = new THREE.Mesh( geometry, material );
+
+            scene.add(cube);
+
+            render();
+        }
+
+        function render(){
+            requestAnimationFrame( render );
+            renderer.render( scene, camera );
+
+        }
+
+        </script>
+    </body>
+
+</html>
