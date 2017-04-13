@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>mmd loader</title>
+		<meta charset="utf-8">
+	</head>
+
+	<body>
+
+		<div id="container"></div>
+
+		<script src="build/three.js"></script>
+
+		<script src="js/libs/mmdparser.min.js"></script>
+		<script src="js/libs/ammo.js"></script>
+
+		<script src="js/loaders/TGALoader.js"></script>
+		<script src="js/loaders/MMDLoader.js"></script>
+		<script src="js/animation/CCDIKSolver.js"></script>
+		<script src="js/animation/MMDPhysics.js"></script>
+
+		<script>
+
+			var container;
+
+			var mesh, camera, scene, renderer, effect;
+			var helper, ikHelper, physicsHelper;
+
+			var mouseX = 0, mouseY = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var clock = new THREE.Clock();
+
+			init();
+			animate();
+
+			function init() {
+
+				container = container = document.getElementById('container');
+
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.z = 30;
+
+				// scene
+
+				scene = new THREE.Scene();
+
+				var ambient = new THREE.AmbientLight( 0x666666 );
+				scene.add( ambient );
+
+				var directionalLight = new THREE.DirectionalLight( 0x887766 );
+				directionalLight.position.set( -1, 1, 1 ).normalize();
+				scene.add( directionalLight );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setClearColor( new THREE.Color( 0xffffff ) );
+				container.appendChild( renderer.domElement );
+
+				var onProgress = function ( xhr ) {
+					if (xhr.lengthComputable) {
+						var percentComplete = xhr.loaded / xhr.total * 100;
+						console.log( Math.round(percentComplete, 2) + '% downloaded' );
+					}
+				};
+
+				var onError = function ( xhr ) {
+				};
+
+				helper = new THREE.MMDHelper();
+				var loader = new THREE.MMDLoader();
+
+				loader.load( 'models/mmd/miku/miku_v2.pmd', ['models/mmd/vmds/wavefile_v2.vmd'], function ( object ) {
+
+					mesh = object;
+					mesh.position.y = -10;
+					scene.add(mesh);
+
+					helper.add(mesh);
+					helper.setAnimation(mesh);
+					helper.setPhysics(mesh);
+					helper.unifyAnimationDuration( { afterglow: 2.0 } );
+
+				});
+
+				var phongMaterials;
+				var originalMaterials;
+
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				render();
+
+			}
+
+			function render() {
+
+				helper.animate(clock.getDelta());
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+
+	</body>
+</html>
