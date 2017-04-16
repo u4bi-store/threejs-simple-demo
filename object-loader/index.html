@@ -31,6 +31,9 @@
         var 
             cube;
 
+        var clock = new THREE.Clock(),
+            mixer;
+
         init();
 
         function init(){
@@ -47,7 +50,14 @@
 
             loader.load('./model.json', function(mesh){
 
-                scene.add(mesh);
+                cube = mesh;
+
+                var clip = cube.animations[0];
+
+                mixer = new THREE.AnimationMixer(cube);
+                mixer.clipAction(clip).play();
+
+                scene.add(cube);
             });
 
             render();
@@ -57,7 +67,10 @@
         function render(){
             requestAnimationFrame( render ); 
             renderer.render( scene, camera );
+
+            var delta = 0.75 * clock.getDelta();
             
+            if(mixer) mixer.update(delta);            
 
         }
 
