@@ -60,7 +60,10 @@
                 join: true,
                 bio: '반가워요',
                 level : 1,
-                kill : 54
+                kill : 54,
+                positonX : cube.position.x,
+                positonY : cube.position.y,
+                positonZ : cube.position.z
             };
 
             /* 문자칸 */
@@ -82,6 +85,12 @@
 
             gui.add(obj, 'level').listen(); // gui.add(obj, 'level');
             obj.level = 94; // listen()시 요소가 변경이되면 gui를 갱신시켜줌
+
+
+            /* 포지션 제어 */
+            gui.add(obj, 'positonX', 0, 5, 1).onChange(function(value) { cube.position.x = value; });
+            gui.add(obj, 'positonY', 0, 5, 1).onChange(function(value) { cube.position.y = value; });
+            gui.add(obj, 'positonZ', 0, 5, 1).onChange(function(value) { cube.position.z = value; });
 
             render();
 
