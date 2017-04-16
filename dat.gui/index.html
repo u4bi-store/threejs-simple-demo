@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - Dat.gui</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script src="./dat.gui.min.js"></script>
+        <script>
+
+        var screen = {
+                width  : 400,
+                height : 300
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 10000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+            container = document.getElementById('container');
+        
+        var 
+            cube;
+
+
+        var
+            gui;
+
+        init();
+
+        function init(){
+            scene.add(camera);
+            camera.position.z = 20;
+
+            renderer.setSize( screen.width, screen.height );
+
+            container.appendChild( renderer.domElement ); 
+
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial({ color : 0x00FF00 }),
+                cube = new THREE.Mesh( geometry, material );
+            
+            scene.add(cube);
+
+            gui = new dat.GUI();
+
+            var obj = {
+                name: "유명재",
+                age: 24,
+                join: true,
+                bio: '반가워요',
+                level : 1,
+                kill : 54
+            };
+
+            /* 문자칸 */
+            gui.add(obj, 'name');
+
+            /* 숫자칸 슬라이드 */
+            gui.add(obj, 'age').min(1).max(99).step(5);
+            // gui.add(obj, 'age', 1, 99, 5);
+
+            /* 체크박스칸 */
+            gui.add(obj, 'join');
+            
+            /* bio 데이터가 변경이 되면 호출 */
+            gui.add(obj, 'bio').onChange(function(value) {
+                console.log('bio 항목 변경 : ', value);
+            });
+
+            obj.bio = 'df';
+
+            gui.add(obj, 'level').listen(); // gui.add(obj, 'level');
+            obj.level = 94; // listen()시 요소가 변경이되면 gui를 갱신시켜줌
+
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame( render ); 
+            renderer.render( scene, camera );
+            
+
+        }
+
+        </script>
+    </body>
+
+</html>
