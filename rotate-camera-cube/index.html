@@ -14,8 +14,8 @@
 		<script>
 
         var screen = {
-                width  : 400,
-                height : 300
+                width  : 600,
+                height : 500
             },
             view = {
                 angle  : 40,
@@ -46,9 +46,14 @@
 
             var geometry = new THREE.BoxGeometry(1, 1, 1),
                 material = new THREE.MeshBasicMaterial();
-            
             cube[0] = new THREE.Mesh( geometry, material);
+            
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial();
             cube[1] = new THREE.Mesh( geometry, material);
+            
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial();
             cube[2] = new THREE.Mesh( geometry, material);
 
             scene.add(cube[0]);
@@ -58,6 +63,13 @@
             cube[0].position.set(0, 0.7, 0);
             cube[1].position.set(12, 1, 0);
             cube[2].position.set(-12, 1, 0);
+            
+            console.log(cube[0]);
+
+            cube[0].material.color.setHex(0xFF0000);
+            cube[1].material.color.setHex(0x00FF00);
+            cube[2].material.color.setHex(0xFF00FF);
+            
 
             render();
 
