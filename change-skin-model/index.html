@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - change skin human 3d model</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script>
+
+        var screen = {
+                width  : 600,
+                height : 600
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 1,
+                far    : 10000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+            container = document.getElementById('container');
+        
+        var 
+            human,
+            materials = [],
+            loader = new THREE.FileLoader(),
+            clock = new THREE.Clock,
+            mixer,
+            helper;
+
+        init();
+
+        function init(){
+            scene.add(camera);
+            camera.position.z = 250;
+
+            renderer.setClearColor(0xFF00FF);
+            renderer.setSize( screen.width, screen.height );
+
+            container.appendChild( renderer.domElement );
+
+            var ambient = new THREE.AmbientLight(0xFFFFFF);
+            scene.add(ambient);
+
+            // var light = new THREE.HemisphereLight(0xFFFFFF, 0x003300, 1);
+            // scene.add(light);
+                        
+            loader.load('./models/human/UCS_config.json', function (text){
+                var config = JSON.parse(text);
+                console.log(config);
+                
+                var loader = new THREE.JSONLoader();
+                loader.load(config.baseUrl + config.character, function (geometry){
+
+                    // console.log(geometry);
+
+                    human = new THREE.SkinnedMesh(geometry, []);
+                    human.name = config.character;
+
+                    human.rotation.x = -Math.PI/2;
+                    human.position.y = -90;
+
+                    scene.add(human);
+                    console.log(human);
+
+                    
+
+                    var textureLoader = new THREE.TextureLoader();
+                    var textures = [];
+
+                    config.skins.forEach(function(item, index){
+                        console.log(item);
+                        textures[index] = textureLoader.load( config.baseUrl+ 'skins/' + item);
+                        console.log(textures[index]);
+                        
+                        textures[index].mapping = THREE.UVMapping;
+                        textures[index].name = item;
+
+                        materials[index] = new THREE.MeshLambertMaterial({
+                            map: textures[index]
+                        });
+
+                        console.log(materials[index]);
+
+                        human.material = materials[1]; // skin index
+
+                        console.log(human);
+                    });
+
+                });
+
+            });
+
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame( render ); 
+            renderer.render( scene, camera );
+
+            if(mixer) mixer.update(clock.getDelta());
+
+        }
+
+        </script>
+    </body>
+
+</html>
