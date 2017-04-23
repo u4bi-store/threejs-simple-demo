@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - rotate camera cube - basic</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script>
+
+        var screen = {
+                width  : 600,
+                height : 500
+            },
+            view = {
+                angle  : 40,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 1000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+            container = document.getElementById('container');
+        
+        var 
+            cube = [],
+            t = 0,
+            t2 = 0;
+
+        init();
+
+        function init(){
+            scene.add(camera);
+            camera.position.z = 30;
+
+            renderer.setSize( screen.width, screen.height );
+
+            container.appendChild( renderer.domElement ); 
+
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial();
+
+            cube[0] = new THREE.Mesh( geometry, material);
+            cube[1] = new THREE.Mesh( geometry, material);
+            cube[2] = new THREE.Mesh( geometry, material);
+
+            scene.add(cube[0]);
+            scene.add(cube[1]);
+            scene.add(cube[2]);
+
+            cube[0].position.set(0, 0.7, 0);
+            cube[1].position.set(2, 1, 0);
+            cube[2].position.set(-2, 1, 0);
+            
+            console.log(cube[0]);            
+
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame( render ); 
+            renderer.render( scene, camera );
+
+            t = t + 0.01;
+            t2 = t2 + 0.005;
+
+            if(t > 90) t = 0
+            if(t2 > 90) t = 0
+
+            cube[0].position.x = ((Math.sin( t) * 10));
+            cube[0].position.y = ((Math.sin( t2) * 10));
+            cube[0].position.z = ((Math.cos( t) * 10));            
+
+            cube[1].position.x = ((Math.sin( t) * 5));
+            cube[1].position.y = ((Math.sin( t2) * 5));
+            cube[1].position.z = ((Math.cos( t) * 5));
+            
+
+            camera.lookAt(new THREE.Vector3(0,0,0));
+        }
+
+        </script>
+    </body>
+
+</html>
