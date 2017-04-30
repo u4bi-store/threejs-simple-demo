@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - rotate planes - vertical</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script>
+
+        var screen = {
+                width  : 600,
+                height : 500
+            },
+            view = {
+                angle  : 40,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 1000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+            container = document.getElementById('container');
+        
+        var 
+            cube = [],
+            t = 0;
+
+        var pos = [
+                { x: -2, y: -10, z: 0 },
+                { x: -1, y: -8,  z: 0 },
+                { x: -2, y: -6,  z: 0 },
+                { x: -1, y: -4,  z: 0 },
+                { x:  1, y:  4,  z: 0 },
+                { x:  2, y:  6,  z: 0 },
+                { x:  1, y:  8,  z: 0 },
+                { x:  2, y:  10, z: 0 },
+            ];
+
+        init();
+
+        function init(){
+            scene.add(camera);
+            camera.position.z = 30;
+
+            renderer.setSize( screen.width, screen.height );
+
+            container.appendChild( renderer.domElement ); 
+
+            var geometry = new THREE.PlaneGeometry( 1, 1, 1),
+                material = new THREE.MeshBasicMaterial();
+
+            for(var i= pos.length; i--;){
+
+                cube.push(new THREE.Mesh( geometry, material));
+                
+                var
+                    last = cube.length-1;
+
+                scene.add(cube[last]);
+                cube[last].position.set(pos[i].x, pos[i].y, pos[i].z);
+            }
+            
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame( render ); 
+            renderer.render( scene, camera );
+
+            t = t + 0.01;
+
+            if(t > 90) t = 0
+
+
+            for(var i= pos.length; i--;){
+                cube[i].position.y = ((Math.sin( t) * pos[i].y));
+                cube[i].position.z = ((Math.cos( t) * pos[i].y));
+            }
+            camera.lookAt(new THREE.Vector3(0,0,0));
+        }
+
+        </script>
+    </body>
+
+</html>
