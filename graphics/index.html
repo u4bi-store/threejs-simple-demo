@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - graphics</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script>
+
+        var screen = {
+                width  : 400,
+                height : 300
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 1000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+            container = document.getElementById('container');
+        
+        var 
+            cube;
+
+        init();
+
+        function init(){
+            scene.add(camera);
+            camera.position.z = 20;
+
+            renderer.setSize( screen.width, screen.height );
+
+            container.appendChild( renderer.domElement ); 
+
+            var triangleGeo = new THREE.Geometry();
+
+            triangleGeo.vertices[0] = new THREE.Vector3(0, 0, 0); /* 첫번째 지점은 0, 0, 0 중심축에 */
+            triangleGeo.vertices[1] = new THREE.Vector3(2, 0, 0); /* 두번째 지점은 x축으로 2 더한 지점 */
+            triangleGeo.vertices[2] = new THREE.Vector3(0, 5, 0); /* 세번째 지점은 y축으로 5 더한 지점 */
+
+            triangleGeo.faces[0] = new THREE.Face3(0, 1, 2); /* 내부 채우기 0, 1, 2 순으로 진행 */
+
+            var squareGeo = new THREE.Geometry();
+
+            squareGeo.vertices[0] = new THREE.Vector3(0, 0, 0); /* 첫번째 지점은 0, 0, 0 중심축에 */
+            squareGeo.vertices[1] = new THREE.Vector3(2, 0, 0); /* 두번째 지점은 x축으로 2 더한 지점 */
+            squareGeo.vertices[2] = new THREE.Vector3(0, 2, 0); /* 세번째 지점은 y축으로 2 더한 지점 */
+            
+            squareGeo.vertices[3] = new THREE.Vector3(2, 2, 0); /* 네번째 지점은 x축으로 2 더하고 y축으로 2 더한 지점*/
+
+            squareGeo.faces[0] = new THREE.Face3(0, 1, 2); /* 내부 채우기 0, 1, 2 로 진행 */
+            squareGeo.faces[1] = new THREE.Face3(1, 3, 2); /* 1, 3 , 2 로 진행*/
+
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial({ color : 0x00FF00 });
+
+            // var cube     = new THREE.Mesh(geometry, material);
+            // var cube     = new THREE.Mesh(triangleGeo, material);
+            var cube     = new THREE.Mesh(squareGeo, material);
+            
+            cube.position.set(3, -3, 0);
+
+            scene.add(cube);
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame(render); 
+            renderer.render(scene, camera);
+            
+
+        }
+
+        </script>
+    </body>
+
+</html>
