@@ -33,10 +33,14 @@
             t = 0;
 
         var pos = [
-                { x:  3, y: 0, z: 0 },
-                { x: -3, y: 0, z: 0 },
-                { x: -8, y: 0, z: 0 },
-                { x:  8, y: 0, z: 0 }
+                { x:  3, y: -4, z: 0 },
+                { x: -3, y: -4, z: 0 },
+                { x: -8, y: -2, z: 0 },
+                { x:  8, y: -2, z: 0 },
+                { x: -5, y:  2, z: 0 },
+                { x:  5, y:  2, z: 0 },
+                { x: -7, y:  4, z: 0 },
+                { x:  7, y:  4, z: 0 },
             ];
 
         init();
@@ -60,6 +64,14 @@
                     last = cube.length-1;
 
                 scene.add(cube[last]);
+
+                var
+                    margin = 1.5;
+
+                pos[i].x *= margin;
+                pos[i].y += 2;
+                pos[i].z *= margin;
+
                 cube[last].position.set(pos[i].x, pos[i].y, pos[i].z);
             }
             
