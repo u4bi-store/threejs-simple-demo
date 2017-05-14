@@ -9,7 +9,7 @@ var objects = [];
 var geo, mat;
 
 init();
-render();
+// render();
 
 function init() {
 
@@ -98,7 +98,7 @@ function boxDown(e){
         scene.add(voxel);
         
         objects.push(voxel);
-        render();
+        // render();
     }
 }
 
