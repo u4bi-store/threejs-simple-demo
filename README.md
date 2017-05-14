@@ -1,5 +1,9 @@
 ##### DEMO
 
+- [rotate-camera-cube](https://u4bi.github.io/threejs-simple-demo/rotate-camera-cube/index.html)
+- [rotate-cube-camera](https://u4bi.github.io/threejs-simple-demo/rotate-cube-camera/index.html)
+- [rotate-planes-vertical](https://u4bi.github.io/threejs-simple-demo/rotate-planes-vertical/index.html)
+- [rotate-planes](https://u4bi.github.io/threejs-simple-demo/rotate-planes/index.html)
 - [three-firebase](https://u4bi.github.io/threejs-simple-demo/three-firebase/index.html)
 - [cube](https://u4bi.github.io/threejs-simple-demo/cube/index.html)
 - [box](https://u4bi.github.io/threejs-simple-demo/dice/index.html)
@@ -25,7 +29,3 @@
 - [dat.gui](https://u4bi.github.io/threejs-simple-demo/dat.gui/index.html)
 - [particules](https://u4bi.github.io/threejs-simple-demo/particules/index.html)
 - [wegl-points](https://u4bi.github.io/threejs-simple-demo/wegl-points/billboard.html)
-- [rotate-camera-cube](https://u4bi.github.io/threejs-simple-demo/rotate-camera-cube/index.html)
-- [rotate-cube-camera](https://u4bi.github.io/threejs-simple-demo/rotate-cube-camera/index.html)
-- [rotate-planes-vertical](https://u4bi.github.io/threejs-simple-demo/rotate-planes-vertical/index.html)
-- [rotate-planes](https://u4bi.github.io/threejs-simple-demo/rotate-planes/index.html)
