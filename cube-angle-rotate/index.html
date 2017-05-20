@@ -71,14 +71,21 @@
             var m_angle = tick * 0.01;
 
 
+            // for(var i = cube.length; i--;){
+            //     cube[i].position.set(
+            //         1 * Math.cos(-m_angle+i) + root.position.x, 
+            //         10 * Math.sin(-m_angle+i) + root.position.y, 
+            //         0
+            //     );
+            // }
+            
             for(var i = cube.length; i--;){
                 cube[i].position.set(
-                    1 * Math.cos(-m_angle+i) + root.position.x, 
-                    10 * Math.sin(-m_angle+i) + root.position.y, 
+                    10 * Math.cos(-m_angle+i) + root.position.x, 
+                    1 * Math.sin(-m_angle+i) + root.position.y, 
                     0
                 );
             }
-            
         }
 
         </script>
