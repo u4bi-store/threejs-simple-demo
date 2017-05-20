@@ -1,6 +1,7 @@
 ##### DEMO
 
 - [three-firebase](https://u4bi.github.io/threejs-simple-demo/three-firebase/index.html)
+- [cube-angle-rotate](https://u4bi.github.io/threejs-simple-demo/cube-angle-rotate/index.html)
 - [rotate-camera-cube](https://u4bi.github.io/threejs-simple-demo/rotate-camera-cube/index.html)
 - [rotate-cube-camera](https://u4bi.github.io/threejs-simple-demo/rotate-cube-camera/index.html)
 - [rotate-planes-vertical](https://u4bi.github.io/threejs-simple-demo/rotate-planes-vertical/index.html)
