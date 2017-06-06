@@ -31,3 +31,4 @@
 - [particules](https://u4bi.github.io/threejs-simple-demo/particules/index.html)
 - [wegl-points](https://u4bi.github.io/threejs-simple-demo/wegl-points/billboard.html)
 - [css-renderer-youtube-plane](https://u4bi.github.io/threejs-simple-demo/css-renderer-youtube-plane/index.html)
+- [transform-control](https://u4bi.github.io/threejs-simple-demo/transform-control/index.html)
