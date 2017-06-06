@@ -30,3 +30,4 @@
 - [dat.gui](https://u4bi.github.io/threejs-simple-demo/dat.gui/index.html)
 - [particules](https://u4bi.github.io/threejs-simple-demo/particules/index.html)
 - [wegl-points](https://u4bi.github.io/threejs-simple-demo/wegl-points/billboard.html)
+- [css-renderer-youtube-plane](https://u4bi.github.io/threejs-simple-demo/css-renderer-youtube-plane/index.html)
