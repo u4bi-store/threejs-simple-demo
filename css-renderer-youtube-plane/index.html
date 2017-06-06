@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+    <head>
+        <title>css renderer youtube video plane</title>
+
+    </head>
+    <body>
+
+        <div id="card">
+
+            <iframe width="280" height="157.5" src="https://www.youtube.com/embed/5Cw4WQuuX_8" frameborder="0" allowfullscreen></iframe>
+
+        </div>
+        
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+        <script src="vendor/CSS3DRenderer.js"></script>
+        <script src="vendor/THREEx.WindowResize.js"></script>
+
+        <script>
+
+        var screen = {
+                width  : window.innerWidth,
+                height : window.innerHeight
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 10000
+            };
+
+        var renderer = [],
+            scene    = [],
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            controls = new THREE.OrbitControls(camera);
+            
+
+
+            camera.position.set(750,750,750);
+            camera.lookAt(new THREE.Vector3(0,0,0));
+            controls.minDistance = 100;
+            controls.maxDistance = 1500;
+
+
+
+            renderer[0] = new THREE.WebGLRenderer();
+            renderer[1] = new THREE.CSS3DRenderer();
+
+            scene[0] = new THREE.Scene();
+            scene[1] = new THREE.Scene();
+            
+            container = document.getElementById('container');
+        
+        THREEx.WindowResize(renderer[0], camera);
+        THREEx.WindowResize(renderer[1], camera);
+ 
+        var 
+            line;
+
+        function setup(){
+
+            scene[0].add(new THREE.AxisHelper(500));
+             
+            renderer[0].setSize(screen.width, screen.height);
+            renderer[0].setClearColor(0xEFEFEF);
+
+            renderer[1].setSize(screen.width, screen.height);            
+            renderer[1].domElement.style.position = 'absolute';
+            renderer[1].domElement.style.top = 0;
+            
+            container.appendChild(renderer[0].domElement);
+            container.appendChild(renderer[1].domElement); 
+        }
+
+        function init(){
+            setup();
+ 
+            var 
+                size = 500,
+                step = 50;
+
+            var geo = new THREE.Geometry();
+
+            for (var i=-size; i<=size; i+=step){
+                geo.vertices.push(new THREE.Vector3(-size, 0, i));
+                geo.vertices.push(new THREE.Vector3(size, 0, i));
+                geo.vertices.push(new THREE.Vector3(i, 0, -size));
+                geo.vertices.push(new THREE.Vector3(i, 0, size));
+
+            }
+            var mat = new THREE.LineBasicMaterial({color: 0x000000, opacity: 0.3, transparent:true});
+
+            line = new THREE.LineSegments(geo, mat);
+
+            scene[0].add(line);   
+
+
+
+            var 
+                card = new THREE.CSS3DObject(document.getElementById('card'));
+
+            scene[1].add(card);         
+
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame(render); 
+            
+            renderer[0].render(scene[0], camera);
+            renderer[1].render(scene[1], camera);
+        }
+
+        init();
+        </script>
+    </body>
+
+</html>
