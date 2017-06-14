@@ -97,11 +97,25 @@
             // box.position.y +=.01;
 
             /* Z */
-            rotate(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), .01);
+            // rotate(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), .01);
+            // cube.position.y +=.01;
+
+            // box.rotateZ(.01);
+            // box.position.y +=.01;
+
+            var delta = new THREE.Quaternion()
+                .setFromEuler(new THREE.Euler(
+                    .01,
+                    0,
+                    0,
+                    'XYZ'
+                ));    
+            cube.quaternion.multiplyQuaternions(delta, cube.quaternion);
             cube.position.y +=.01;
 
-            box.rotateZ(.01);
-            box.position.y +=.01;
+            box.rotateX(.01);
+            box.position.y +=.01;            
+
         }
 
         function rotate(start, end, angle){
