@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - emoji</title>
+        <meta charset="utf-8";
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+        <script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+        <script>
+
+        var screen = {
+                width  : 800,
+                height : 300
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 10000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+	    controls = new THREE.OrbitControls( camera ),
+            container = document.getElementById('container');
+        
+        var 
+            emoji;
+
+        function setup(){        
+            scene.add(camera);
+            scene.add(new THREE.AxisHelper(20));
+            camera.position.set(300,300,300);
+            camera.lookAt(new THREE.Vector3(0,0,0));
+            controls.minDistance = 400;
+            controls.maxDistance = 600;
+            renderer.setSize(screen.width, screen.height);
+            renderer.setClearColor(new THREE.Color(0xFF00FF));
+            container.appendChild(renderer.domElement); 
+        }
+
+        function init(){
+            setup();
+
+            var 
+                text = 'TEST 😀 👿 😁 🤡 😅';
+
+            var canvas = document.createElement('canvas'),
+                context = canvas.getContext('2d');
+            
+            canvas.width = 1000;
+
+            context.font = "Bold 100px Arial";
+            context.fillStyle = "rgba(255,255,255,0.95)";
+            context.fillText(text, 100, 100);
+
+            var texture = new THREE.Texture(canvas) 
+            texture.needsUpdate = true;
+
+            var material = new THREE.MeshBasicMaterial( {map: texture, side:THREE.DoubleSide } );
+            material.transparent = true;
+
+            emoji = new THREE.Mesh(new THREE.PlaneGeometry(canvas.width, canvas.height), material);
+            scene.add(emoji);
+
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame(render); 
+            renderer.render(scene, camera);
+            
+
+        }
+
+        init();
+        </script>
+    </body>
+
+</html>
