@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+    <head>
+        <title>threejs - quaternion rotation</title>
+        <style>
+            
+        </style>
+    </head>
+    <body>
+
+        <div id="container"></div>
+
+        <!--<script src="../lib/three.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/84/three.min.js"></script>
+		<script src="http://threejs.org/examples/js/controls/OrbitControls.js"></script>
+        <script>
+
+        var screen = {
+                width  : 400,
+                height : 800
+            },
+            view = {
+                angle  : 45,
+                aspect : screen.width / screen.height,
+                near   : 0.1,
+                far    : 10000
+            },
+            renderer = new THREE.WebGLRenderer(),
+            camera   = new THREE.PerspectiveCamera( view.angle, view.aspect, view. near, view.far ),
+            scene    = new THREE.Scene(),
+	        controls = new THREE.OrbitControls( camera );
+            container = document.getElementById('container');
+        
+        var 
+            cube,
+            box;
+
+
+        function setup(){        
+            scene.add(camera);
+            scene.add(new THREE.AxisHelper(20));
+            camera.position.set(15,15,30);
+
+            camera.lookAt(new THREE.Vector3(0,0,0));
+            controls.minDistance = 10;
+            controls.maxDistance = 50;
+            renderer.setSize(screen.width, screen.height);
+            container.appendChild(renderer.domElement); 
+        }
+
+        function init(){
+            setup();
+
+            var geometry = new THREE.BoxGeometry(1, 1, 1),
+                material = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+            
+            geometry.faces[0].color.setHex(0xFF0000);
+            geometry.faces[1].color.setHex(0xFF0000);
+
+            cube = new THREE.Mesh(geometry, material);
+
+            cube.position.x = 2;
+            cube.position.z = 5;
+            cube.add(new THREE.AxisHelper(2));
+
+            scene.add(cube);
+
+            box = new THREE.Mesh(geometry, material);
+
+            box.position.x = 2;
+            box.position.z = 10;
+            box.add(new THREE.AxisHelper(2));
+
+            scene.add(box);            
+
+            render();
+
+        }
+
+        function render(){
+            requestAnimationFrame( render ); 
+            renderer.render( scene, camera );
+
+
+            /* X */
+            // rotate(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1), .01);
+            // cube.position.y +=.01;
+
+            // box.rotateX(.01);
+            // box.position.y +=.01;
+
+            /* Y */
+            // rotate(new THREE.Vector3(0, 0, 1), new THREE.Vector3(1, 0, 0), .01);
+            // cube.position.y +=.01;
+
+            // box.rotateY(.01);
+            // box.position.y +=.01;
+
+            /* Z */
+            // rotate(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 1, 0), .01);
+            // cube.position.y +=.01;
+
+            // box.rotateZ(.01);
+            // box.position.y +=.01;
+
+            var delta = new THREE.Quaternion()
+                .setFromEuler(new THREE.Euler(
+                    .01,
+                    0,
+                    0,
+                    'XYZ'
+                ));    
+            cube.quaternion.multiplyQuaternions(delta, cube.quaternion);
+            cube.position.y +=.01;
+
+            box.rotateX(.01);
+            box.position.y +=.01;            
+
+        }
+
+        function rotate(start, end, angle){
+
+            var axis   = new THREE.Vector3(),
+                quater = new THREE.Quaternion();
+
+            axis.crossVectors(start, end).normalize();
+            quater.setFromAxisAngle(axis, angle);
+
+            var model = cube.parent.quaternion;
+
+            model.multiplyQuaternions(quater, model);
+            model.normalize();
+            
+            cube.quaternion.copy(model);
+        }
+
+        init();
+        </script>
+    </body>
+
+</html>
