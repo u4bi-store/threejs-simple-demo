@@ -33,3 +33,4 @@
 - [css-renderer-youtube-plane](https://u4bi.github.io/threejs-simple-demo/css-renderer-youtube-plane/index.html)
 - [transform-control](https://u4bi.github.io/threejs-simple-demo/transform-control/index.html)
 - [quternion rotation](https://u4bi.github.io/threejs-simple-demo/quaternion-rotation/index.html)
+- [emoji](https://u4bi.github.io/threejs-simple-demo/emoji/index.html)
